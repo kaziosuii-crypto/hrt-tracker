@@ -6,12 +6,13 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "node --test tests/records.test.mjs",
+    "test": "node --test tests/records.test.mjs tests/meal-photos.test.mjs",
     "test:browser": "node tests/browser.cjs",
     "test:resilience": "node tests/resilience.cjs"
   },
   "dependencies": {
     "@supabase/supabase-js": "2.118.0",
+    "@vercel/blob": "^2.8.2",
     "animejs": "4.5.0",
     "lucide-react": "0.468.0",
     "next": "15.5.28",

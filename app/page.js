@@ -24,6 +24,7 @@ import {
 
 import { supabase } from "../lib/supabase";
 import MenuChange from "./MenuChange";
+import MealPhotos from "./MealPhotos";
 import { warmFigures } from "../lib/figure-cache";
 import {
   useSceneDirection,
@@ -742,6 +743,7 @@ function FoodPage({ rows }) {
                       ? "—"
                       : r.estimated_kcal + " kcal"}
                   </strong>
+                  <MealPhotos key={r.id + String(r.photo_before_url) + String(r.photo_after_url)} meal={r} />
                   <Details r={r} />
                 </article>
               ))}
