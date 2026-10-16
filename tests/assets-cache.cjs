@@ -17,30 +17,37 @@ const assert = require("node:assert/strict");
   const context = await browser.newContext({ ignoreHTTPSErrors: false });
   const page = await context.newPage();
   await page.goto(process.env.TEST_URL || "http://localhost:3011");
-  const result = await page.evaluate(async () => {
-    const preload = document.querySelector(
+  const results = await page.evaluate(async () => {
+    const results = [];
+    for (const preload of document.querySelectorAll(
       'link[as="image"][href*="/art/atlas-"]',
-    );
-    const url = new URL("passengers-near.webp", preload.href).pathname;
-    const first = await fetch(url);
-    await first.arrayBuffer();
-    const policy = first.headers.get("cache-control");
-    await fetch(url).then((r) => r.arrayBuffer());
-    const entries = performance.getEntriesByName(location.origin + url);
-    return {
-      policy,
-      transfers: entries.map((e) => ({
-        transfer: e.transferSize,
-        encoded: e.encodedBodySize,
-      })),
-    };
+    )) {
+      const url = new URL(preload.href).pathname;
+      const first = await fetch(url);
+      await first.arrayBuffer();
+      const policy = first.headers.get("cache-control");
+      await fetch(url).then((r) => r.arrayBuffer());
+      const entries = performance.getEntriesByName(location.origin + url);
+      results.push({
+        url,
+        policy,
+        transfers: entries.map((e) => ({
+          transfer: e.transferSize,
+          encoded: e.encodedBodySize,
+        })),
+      });
+    }
+    return results;
   });
-  assert.match(result.policy, /max-age=31536000/);
-  assert.match(result.policy, /immutable/);
-  assert.equal(result.transfers.at(-1).transfer, 0);
+  for (const result of results) {
+    assert.match(result.policy, /max-age=31536000/);
+    assert.match(result.policy, /immutable/);
+    assert.equal(result.transfers.at(-1).transfer, 0);
+  }
+  assert.equal(results.length, 5);
   console.log(
     "Versioned art, one-year immutable policy, repeat transfer zero bytes:",
-    result,
+    results,
   );
   await browser.close();
 })().catch((e) => {

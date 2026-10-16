@@ -10,7 +10,7 @@ const assert = require("node:assert/strict");
   await p.locator(".weightHero").waitFor();
   await p.locator(".tabs button").nth(1).click();
   await p.locator(".bodyRegion").waitFor();
-  await p.locator(".commute").waitFor({ state: "detached" });
+  await p.locator(".menuChange").waitFor({ state: "detached" });
   const summary = p.locator(".bodyRegion>summary").first();
   for (let i = 0; i < 7; i++) {
     await summary.evaluate((e) => e.click());

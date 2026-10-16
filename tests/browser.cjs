@@ -57,11 +57,16 @@ async function setup(
       };
     });
   }
-  const errors = [];
+  const errors = [],
+    obsoleteAssets = [];
+  page.on("request", (r) => {
+    if (/\/(carriage|passengers)[^/]*\.webp/.test(r.url()))
+      obsoleteAssets.push(r.url());
+  });
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(base);
   await page.locator(".tabs").waitFor();
-  return { page, context, errors };
+  return { page, context, errors, obsoleteAssets };
 }
 async function main() {
   const browser = await (
@@ -81,7 +86,12 @@ async function main() {
     [430, 932],
     [1440, 1000],
   ]) {
-    const { page: p, context, errors } = await setup(browser, width, height);
+    const {
+      page: p,
+      context,
+      errors,
+      obsoleteAssets,
+    } = await setup(browser, width, height);
     const names = ["体重", "身体", "HRT", "化验", "每日", "饮食"];
     for (let i = 0; i < 6; i++) {
       await p.locator(".tabs button").nth(i).click();
@@ -125,13 +135,16 @@ async function main() {
       .locator(".tabs button")
       .nth(5)
       .evaluate((el) => el.click());
-    await p.locator(".commute").waitFor({ state: "detached", timeout: 8500 });
+    await p
+      .locator(".menuChange")
+      .waitFor({ state: "detached", timeout: 8500 });
     assert.equal(
       await p.locator(".tabs button[aria-current=page] b").textContent(),
       "饮食",
     );
-    assert.equal(await p.locator(".commute").count(), 0);
+    assert.equal(await p.locator(".menuChange").count(), 0);
     assert.deepEqual(errors, []);
+    assert.deepEqual(obsoleteAssets, [], "retired train assets must not load");
     await p.locator("input").fill("不存在的检索值");
     assert.equal(await p.locator(".empty").count(), 1);
     await p.locator("input").fill("");
@@ -153,7 +166,7 @@ async function main() {
   }
   const { page: p, context } = await setup(browser, 390, 844, "reduce");
   await p.locator(".tabs button").nth(3).click();
-  assert.equal(await p.locator(".commute").count(), 0);
+  assert.equal(await p.locator(".menuChange").count(), 0);
   assert.equal(
     await p.locator(".tabs button[aria-current=page] b").textContent(),
     "化验",

@@ -36,6 +36,8 @@ const directions = {
     field: [320, 80, 12],
   },
 };
+export { SceneField } from "./StageArt";
+
 const at = ([x, y, r], scale = 1) =>
   `translate3d(${x}px,${y}px,0) rotate(${r}deg) scale(${scale})`;
 const rest = "translate3d(0,0,0) rotate(0deg) scale(1)";
@@ -46,8 +48,19 @@ export function useSceneDirection(ref, identity, loaded) {
     if (!root || !loaded || noMotion()) return;
     const native = [];
     const d = directions[identity] || directions.weight_trend;
-    // The train is still covering the page at mount. Start the composition as it clears.
-    const lead = document.querySelector(".commute") ? 500 : 80;
+    // The foreground is handing off directly to this new menu composition.
+    const switching = !!document.querySelector(".menuChange");
+    const lead = switching ? 60 : 80;
+    const width = Math.min(innerWidth, 1680),
+      height = Math.min(innerHeight, 1000);
+    const distance = (v) =>
+      switching
+        ? [
+            Math.sign(v[0] || 1) * width * 0.65,
+            Math.sign(v[1] || 1) * height * 0.32,
+            v[2] * 2,
+          ]
+        : v;
     const scope = createScope({ root: ref }).add(() => {
       const move = (node, from, delay, duration = 880, bounce = 0.13) => {
         if (!node) return;
@@ -58,6 +71,9 @@ export function useSceneDirection(ref, identity, loaded) {
           duration,
           ease: `cubic-bezier(.18,${1 + bounce},.25,1)`,
           onComplete: () => {
+            // WebKit can commit a stale underlying transform for an inert scroll subtree.
+            // The composition has a defined rest pose; finalize it explicitly after cancellation.
+            node.style.transform = "none";
             node.style.willChange = "auto";
           },
         });
@@ -65,28 +81,32 @@ export function useSceneDirection(ref, identity, loaded) {
       };
       move(
         root.querySelector(".sceneField"),
-        at(d.field, 1.15),
+        at(distance(d.field), 1.2),
         lead,
         1150,
         0.04,
       );
       move(
         root.querySelector(".hero"),
-        at([d.entry[0] * 0.65, -65, d.entry[2]]),
+        at(
+          switching
+            ? [-width * 0.5, -height * 0.12, -8]
+            : [d.entry[0] * 0.65, -65, d.entry[2]],
+        ),
         lead + 40,
         820,
         0.14,
       );
       move(
         root.querySelector(".weightHero"),
-        at(d.entry, 0.94),
+        at(distance(d.entry), 0.94),
         lead + 70,
         1000,
         0.18,
       );
       move(
         root.querySelector(".trajectory"),
-        at(d.paper, 1.025),
+        at(distance(d.paper), 1.025),
         lead + 150,
         1100,
         0.1,
@@ -99,8 +119,16 @@ export function useSceneDirection(ref, identity, loaded) {
       sections.forEach((el, i) =>
         move(
           el,
-          at([i % 2 ? 60 : -60, 100 + i * 12, i % 2 ? 1.5 : -1.5]),
-          lead + 170 + i * 65,
+          at(
+            switching
+              ? [
+                  i % 2 ? width * 0.6 : -width * 0.6,
+                  height * 0.2,
+                  i % 2 ? 5 : -5,
+                ]
+              : [i % 2 ? 60 : -60, 100 + i * 12, i % 2 ? 1.5 : -1.5],
+          ),
+          lead + 170 + Math.min(i * 65, 180),
           900,
           0.1,
         ),
@@ -115,13 +143,40 @@ export function useSceneDirection(ref, identity, loaded) {
         });
     });
     const leave = () => {
-      native.push(
-        waapi.animate(root, {
-          transform: [rest, "translate3d(0,-35px,0) scale(.975)"],
-          duration: 420,
-          ease: "inOut(3)",
-        }),
-      );
+      const groups = [
+        [root.querySelector(".sceneField"), width * 0.55, -height * 0.2, 12],
+        [root.querySelector(".hero"), -width * 0.65, -height * 0.15, -10],
+        [root.querySelector(".weightHero"), -width * 0.8, height * 0.25, -8],
+        [root.querySelector(".trajectory"), width * 0.85, -height * 0.2, 8],
+        ...Array.from(
+          root.querySelectorAll(
+            ":scope>.panel,:scope>.plan,:scope>.lab,:scope>.daily,:scope>.foodDay",
+          ),
+        )
+          .slice(0, 8)
+          .map((el, i) => [
+            el,
+            (i % 2 ? 1 : -1) * width * 1.25,
+            height * 0.4,
+            (i % 2 ? 1 : -1) * 7,
+          ]),
+      ];
+      groups.forEach(([node, x, y, r], i) => {
+        if (node)
+          native.push(
+            waapi.animate(node, {
+              transform: [
+                getComputedStyle(node).transform === "none"
+                  ? rest
+                  : getComputedStyle(node).transform,
+                at([x, y, r], 0.94),
+              ],
+              duration: 440,
+              delay: Math.min(i * 12, 50),
+              ease: "in(3)",
+            }),
+          );
+      });
     };
     window.addEventListener("atlas:depart", leave);
     return () => {
@@ -168,40 +223,4 @@ export function useTerminalDirection(ref, enabled) {
     run();
     return () => animations.forEach((a) => a.revert());
   }, [enabled]);
-}
-export function SceneField({ section }) {
-  const index = Object.keys(directions).indexOf(section) + 1;
-  return (
-    <div className={"sceneField field" + index} aria-hidden="true">
-      <svg viewBox="0 0 1000 700" preserveAspectRatio="xMidYMid slice">
-        <defs>
-          <pattern
-            id="atlas-dot-field"
-            width="18"
-            height="18"
-            patternUnits="userSpaceOnUse"
-          >
-            <circle cx="4" cy="4" r="2.4" fill="currentColor" />
-          </pattern>
-        </defs>
-        <path
-          className="fieldInk"
-          d="M740 -80L1100 80 1030 690 870 540 940 330 720 260 820 110Z"
-        />
-        <path
-          className="fieldPaper"
-          d="M870 50L1030 110 990 490 950 430 1005 170 825 115Z"
-        />
-        <path
-          className="fieldDots"
-          d="M640 70H1000V370L720 210Z"
-          fill="url(#atlas-dot-field)"
-        />
-        <text x="700" y="530" className="fieldNumber">
-          {String(index).padStart(2, "0")}
-        </text>
-        <path className="fieldSlash" d="M-40 640L700 570 350 650Z" />
-      </svg>
-    </div>
-  );
 }

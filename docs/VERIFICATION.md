@@ -1,6 +1,14 @@
 # Verification — 2026-10-16
 
-## Current release
+## Current direct-menu revision
+
+The train has been removed from navigation and login resource loading. See DIRECT_MENU_MOTION.md for actual gameplay-frame evidence and the current 1800ms character / patterned field / information-plane handoff. The covered React view swap is at 460ms; data controls are inert until the composition settles. Three new original generated character layers total 224,150 bytes; the original baked pattern adds 118,150 bytes. Current production build first-load JavaScript is 202kB. No data/API/schema/authentication implementation changed.
+
+Final 4× CPU Chromium rAF samples (3.2 seconds): 390px 185 frames, median 16.7ms, p95 16.8ms, three intervals over34ms, long tasks 57/53ms; 1920px 166 frames, median 16.7ms, p95 33.4ms, seven intervals over34ms, long task57ms. Replacing the moving SVG pattern with a baked bitmap reduced the observed desktop p95 from49.9ms to33.4ms in sequential samples. This is a cloud rendering-clock measurement, not a physical-device or uninterrupted-60fps claim.
+
+Current checks: record regression, production build, slow-network/stale-response/session-refresh/signout resilience, covered handoff/inert release/cancel-on-signout, rapid disclosure reversals and private-record contrast/number separation at390/1920 all pass. Six complete pages were visually inspected at1920 and390 with no document overflow or client exceptions. Original gameplay reference and choreography keyframes were inspected separately; reference assets are never shipped. Chromium and WebKit full suites pass at 390×844, 430×932 and 1440×1000: six pages, actual session controls, expansion, search/export, 48 rapid selections per viewport and reduced motion; zero client exceptions or obsolete train requests. All five critical images pass one-year immutable caching and zero-byte repeat transfers. Phone artwork clipping was tightened after screenshot review so the static figure ends in the title area rather than overlapping session controls.
+
+## Previous release validation
 
 - Next.js 15.5.28 production build PASS. First-load JavaScript 201 kB; XLSX remains loaded only on export.
 - Record-adapter regression PASS. No data-layer/API/schema/authentication changes in this revision.
@@ -16,9 +24,9 @@
 Production-build Chromium, CDP CPU throttling 4×. Approximately 3.2-second rAF sampling window; one warm-up before selection. These are cloud rendering-clock samples, not measured physical display frame rates.
 
 | Width | Before frames | After frames | Before p95 | After p95 | Before intervals >34ms | After intervals >34ms |
-| --- | ---: | ---: | ---: | ---: | ---: | ---: |
-| 390 | 176 | 188 | 33.4ms | 16.8ms | 2 | 2 |
-| 1920 | 70 | 136 | 116.7ms | 49.9ms | 25 | 7 |
+| ----- | ------------: | -----------: | ---------: | --------: | ---------------------: | --------------------: |
+| 390   |           176 |          188 |     33.4ms |    16.8ms |                      2 |                     2 |
+| 1920  |            70 |          136 |    116.7ms |    49.9ms |                     25 |                     7 |
 
 Median interval was approximately 16.7ms in all four samples. The final mobile sample had no observed long tasks; desktop had two (60ms and 55ms). A controlled full-mask ablation and an earlier optimized sample reached desktop p95 33.3–33.4ms; final native-motion sample was 49.9ms, so this release does not claim uninterrupted 60fps. The native compositor can continue transform animation while the main thread handles a view commit; rAF sampling alone does not measure those compositor frames.
 

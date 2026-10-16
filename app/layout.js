@@ -1,5 +1,6 @@
 import "./globals.css";
 import "./direction.css";
+import { figure } from "../lib/figure-assets";
 export const metadata = {
   title: "HRT Atlas",
   description: "Private longitudinal HRT dashboard",
@@ -31,26 +32,12 @@ export default function RootLayout({ children }) {
         <link
           rel="preload"
           as="image"
-          href="/art/atlas-04988e4d9db3/passengers-mid.webp"
+          href={figure("rest")}
           fetchPriority="high"
         />
-        <link
-          rel="preload"
-          as="image"
-          href="/art/atlas-04988e4d9db3/carriage.webp"
-          media="(min-width:701px)"
-        />
-        <link
-          rel="preload"
-          as="image"
-          href="/art/atlas-04988e4d9db3/carriage-mobile.webp"
-          media="(max-width:700px)"
-        />
-        <link
-          rel="preload"
-          as="image"
-          href="/art/atlas-04988e4d9db3/passengers-far.webp"
-        />
+        <link rel="preload" as="image" href={figure("turn")} />
+        <link rel="preload" as="image" href={figure("hand")} />
+        <link rel="preload" as="image" href={figure("pattern-v1")} />
       </head>
       <body>{children}</body>
     </html>

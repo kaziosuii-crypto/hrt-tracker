@@ -47,7 +47,7 @@ const { setup } = require("./browser.cjs");
         p95: a[Math.floor(a.length * 0.95)],
         over34: a.filter((n) => n > 34).length,
         longTasks: window.longTasks,
-        finished: !document.querySelector(".commute"),
+        finished: !document.querySelector(".menuChange"),
       };
     });
     const end = (await cdp.send("Performance.getMetrics")).metrics;

@@ -34,7 +34,7 @@ const assert = require("node:assert/strict");
     .nth(1)
     .evaluate((el) => el.click());
   let previous = 0;
-  for (const ms of [450, 700, 1000, 1420, 1700, 2100, 2500, 2800, 3200]) {
+  for (const ms of [120, 280, 480, 650, 900, 1150, 1450, 1680, 2000]) {
     await p.clock.runFor(ms - previous);
     previous = ms;
     // Playwright's clock drives JS timelines; align native WAAPI animations separately.

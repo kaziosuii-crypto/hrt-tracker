@@ -59,7 +59,7 @@ async function main() {
   await slow.page.waitForTimeout(300);
   await slow.page.locator(".tabs button").nth(3).click();
   await slow.page.waitForTimeout(3000);
-  assert.equal(await slow.page.locator(".commute").count(), 0);
+  assert.equal(await slow.page.locator(".menuChange").count(), 0);
   await slow.page.getByRole("button", { name: "刷新", exact: true }).click();
   await slow.page.waitForTimeout(4700);
   assert.ok((await slow.page.locator(".empty").textContent()).includes("格式"));

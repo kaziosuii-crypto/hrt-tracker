@@ -23,14 +23,14 @@ import {
 } from "lucide-react";
 
 import { supabase } from "../lib/supabase";
-import Commute from "./Commute";
+import MenuChange from "./MenuChange";
+import { warmFigures } from "../lib/figure-cache";
 import {
   useSceneDirection,
   useTerminalDirection,
   SceneField,
 } from "./Direction";
 import { NavButton, MotionDetails } from "./Motion";
-import { warmArt } from "../lib/art-cache";
 import {
   recordedAt,
   sessionKey,
@@ -917,7 +917,7 @@ export default function Home() {
     identity = useRef(null),
     access = useRef(null),
     selected = useRef(id),
-    assetsReady = useRef(false),
+    figuresReady = useRef(false),
     swapped = useRef(false),
     animating = useRef(false);
   selected.current = id;
@@ -1026,12 +1026,12 @@ export default function Home() {
     }
   }, [id, token, load]);
   useEffect(() => {
-    let active = true;
-    warmArt().then((ready) => {
-      if (active) assetsReady.current = ready;
+    let alive = true;
+    warmFigures().then((ready) => {
+      if (alive) figuresReady.current = ready;
     });
     return () => {
-      active = false;
+      alive = false;
     };
   }, []);
   useTerminalDirection(terminal, !!user);
@@ -1045,13 +1045,14 @@ export default function Home() {
     }
     if (v === selected.current) return;
     if (
-      !assetsReady.current ||
+      !figuresReady.current ||
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
     ) {
       I(v);
       Q("");
       return;
     }
+    window.scrollTo({ top: 0, left: 0, behavior: "auto" });
     window.dispatchEvent(new Event("atlas:depart"));
     dest.current = v;
     swapped.current = false;
@@ -1224,7 +1225,14 @@ export default function Home() {
           {actionError}
         </p>
       )}
-      <section ref={stage} className="content" key={id} data-section={id}>
+      <section
+        ref={stage}
+        className="content"
+        key={id}
+        data-section={id}
+        inert={anim ? true : undefined}
+        aria-busy={anim}
+      >
         <SceneField section={id} />
         <DataBoundary key={id} retry={retry}>
           <Content
@@ -1238,11 +1246,10 @@ export default function Home() {
       </section>
       <footer>HRT ATLAS / 数据保持原始粒度 · 页面只负责整理呈现</footer>
       {anim && (
-        <Commute
+        <MenuChange
           key={transitionRun}
           onCovered={covered}
           onFinished={finished}
-          label={(tabs.find((x) => x[0] === target) || t)[2]}
         />
       )}
     </main>

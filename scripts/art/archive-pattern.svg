@@ -1,0 +1,33 @@
+<svg
+      xmlns="http://www.w3.org/2000/svg"
+      viewBox="0 0 1000 800"
+      preserveAspectRatio="xMaxYMin slice"
+      aria-hidden="true"
+    >
+      <defs>
+        <pattern
+          id="atlas-paper-fold"
+          width="180"
+          height="180"
+          patternUnits="userSpaceOnUse"
+          patternTransform="rotate(-12)"
+        >
+          <rect width="180" height="180" fill="#eee9df" />
+          <g fill="none" stroke="#111113" stroke-linejoin="miter">
+            <path stroke-width="9" d="M90 4L174 72 150 174 48 150 4 52Z" />
+            <path stroke-width="7" d="M88 27L149 79 132 150 61 131 27 59Z" />
+            <path stroke-width="7" d="M87 49L126 86 113 125 75 111 49 65Z" />
+            <path stroke-width="8" d="M85 71L104 89 94 104 75 93Z" />
+          </g>
+          <path fill="#111113" d="M0 0L32 0 0 29ZM180 180H144L180 147Z" />
+        </pattern>
+      </defs>
+      <path fill="#bd1030" d="M0 0H1000V800H0Z" />
+      <path fill="url(#atlas-paper-fold)" d="M180 -80H1080V710L350 520 80 230Z" />
+      <path
+        fill="#08090a"
+        d="M-100 -100H215L370 110 250 390 610 630 1080 730 1100 900H-100Z"
+      />
+      <path fill="#eee9df" d="M190 450L1000 690 1000 739 360 560Z" />
+      <path fill="#ef1539" d="M565 100L1000 0V73L675 168Z" />
+    </svg>

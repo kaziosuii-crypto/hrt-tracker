@@ -1512,3 +1512,329 @@ footer {
 .field2 svg {
   transform: none;
 }
+/* Native character / field / information choreography. */
+.menuChange {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  pointer-events: none;
+  overflow: hidden;
+  contain: strict;
+  isolation: isolate;
+}
+.authArtwork {
+  background-image: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .menuChange {
+    display: none;
+  }
+}
+/* Reference-led stage: left information, a persistent right-hand character, patterned field and paper tail. */
+.sceneField.atlasStage {
+  height: 810px;
+  inset: 0 -20px auto;
+  overflow: hidden;
+  contain: paint;
+}
+.sceneField .atlasPattern {
+  object-fit: cover;
+  object-position: right top;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 47%;
+  height: 780px;
+  opacity: 1;
+}
+.scenePortrait {
+  position: absolute;
+  right: -12px;
+  top: 20px;
+  width: 46%;
+  height: 700px;
+  object-fit: contain;
+  object-position: right top;
+  max-width: none;
+  filter: none;
+  pointer-events: none;
+}
+.sceneRibbon {
+  position: absolute;
+  right: 0;
+  top: 600px;
+  width: 43%;
+  transform: rotate(-9deg);
+  transform-origin: right bottom;
+  color: #111;
+  background: #eee9df;
+  padding: 9px 18px;
+  clip-path: polygon(8% 0, 100% 7%, 96% 100%, 0 83%);
+}
+.sceneRibbon > b {
+  display: block;
+  font:
+    900 italic clamp(28px, 3.3vw, 57px) / 1 Atlas Heavy,
+    sans-serif;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.sceneRibbon > span {
+  font:
+    700 11px/1.8 Atlas Condensed,
+    sans-serif;
+  letter-spacing: 0.08em;
+}
+.hero .heroEyebrow > b {
+  background: #08090a;
+  color: var(--paper) !important;
+  border-left: 4px solid var(--accent) !important;
+  padding: 3px 9px 5px;
+}
+.weightLayout {
+  background: #08090a;
+}
+.content > .panel,
+.content > .plan,
+.content > .lab,
+.content > .daily,
+.content > .foodDay {
+  background: #0d0e10;
+}
+.actorChange {
+  background: none;
+}
+.actorPattern {
+  object-fit: cover;
+  object-position: right top;
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  max-width: none;
+  transform-origin: 70% 45%;
+  will-change: transform;
+  transform: translate3d(105vw, -20vh, 0) rotate(18deg) scale(1.2);
+}
+.actorTurn,
+.actorRest {
+  position: absolute;
+  object-fit: contain;
+  object-position: right top;
+  max-width: none;
+  transform-origin: 50% 60%;
+  will-change: transform, opacity;
+  opacity: 0;
+  pointer-events: none;
+  filter: none;
+}
+.actorHand {
+  position: absolute;
+  left: 20vw;
+  top: 5vh;
+  width: min(90vw, 1250px);
+  height: auto;
+  max-width: none;
+  transform-origin: 50% 90%;
+  will-change: transform;
+  transform: translate3d(85vw, 80vh, 0) rotate(34deg) scale(0.72);
+  filter: none;
+}
+.actorPaperTail {
+  position: absolute;
+  left: 0;
+  bottom: 4vh;
+  width: 110vw;
+  height: 22vh;
+  max-width: none;
+  will-change: transform;
+  transform: translate3d(-120vw, 35vh, 0) rotate(-18deg);
+}
+@media (min-width: 1051px) {
+  .content {
+    padding-right: clamp(280px, 30vw, 470px);
+  }
+  .hero,
+  .hero0,
+  .hero1,
+  .hero2,
+  .hero3,
+  .hero4,
+  .hero5 {
+    padding-left: 70px;
+  }
+  .hero h1 {
+    font-size: 35px;
+  }
+  .hero p {
+    max-width: 720px;
+  }
+  .weightLayout {
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: 22px;
+  }
+  .weightHero > strong {
+    font-size: clamp(80px, 6.6vw, 122px);
+    gap: 10px;
+  }
+  .weightHero > strong i {
+    font-size: 24px;
+  }
+  .weightHero:before {
+    height: 145px;
+  }
+  .stats {
+    gap: 9px;
+  }
+  .stats span {
+    font-size: 13px;
+  }
+  .stats b {
+    font-size: clamp(22px, 1.9vw, 31px);
+  }
+  .trajectory .sect > b {
+    font-size: 25px;
+  }
+  .trajectory .sect small {
+    font-size: 12px;
+  }
+  .trajectory .chartFocus {
+    flex-wrap: wrap;
+  }
+  .bodyRegion .metrics {
+    grid-template-columns: 1fr;
+  }
+  .bodyRegion .metric {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  }
+  .plan,
+  .lab {
+    display: block;
+  }
+  .labHead > span {
+    display: grid;
+    flex: 1;
+    justify-content: start;
+    align-items: center;
+    gap: 7px;
+  }
+  .lab .analyte {
+    padding: 18px 14px;
+  }
+  .lab .analyte > span {
+    gap: 14px;
+  }
+  .lab .analyte > small {
+    margin-top: 8px;
+  }
+  .medicine {
+    padding-block: 18px;
+  }
+  .weightRow {
+    grid-template-columns: minmax(150px, 1fr) minmax(130px, 1fr) minmax(
+        95px,
+        0.7fr
+      );
+    padding-block: 12px !important;
+  }
+}
+@media (min-width: 701px) and (max-width: 1050px) {
+  .sceneField.atlasStage {
+    height: 500px;
+  }
+  .sceneField .atlasPattern {
+    width: 45%;
+    height: 450px;
+  }
+  .scenePortrait {
+    width: 42%;
+    height: 420px;
+    right: -8px;
+  }
+  .sceneRibbon {
+    top: 350px;
+    width: 43%;
+  }
+  .hero > .heroCopy {
+    max-width: 67%;
+  }
+  .weightLayout {
+    position: relative;
+    z-index: 1;
+  }
+  .content > .panel,
+  .content > .plan,
+  .content > .lab,
+  .content > .daily,
+  .content > .foodDay {
+    position: relative;
+    z-index: 1;
+  }
+}
+@media (max-width: 700px) {
+  .sceneField.atlasStage {
+    inset: 0 -20px auto;
+    height: 175px;
+  }
+  .sceneField .atlasPattern {
+    right: -60px;
+    top: -15px;
+    width: 250px;
+    height: 360px;
+  }
+  .scenePortrait {
+    right: -68px;
+    top: 0;
+    width: 285px;
+    height: 320px;
+    object-position: right top;
+  }
+  .sceneRibbon {
+    display: none;
+  }
+  .hero,
+  .hero0,
+  .hero1,
+  .hero2,
+  .hero3,
+  .hero4,
+  .hero5 {
+    min-height: 160px;
+    padding-top: 14px;
+    padding-bottom: 35px;
+  }
+  .hero > .heroCopy {
+    max-width: 100%;
+  }
+  .hero h1 {
+    font-size: 27px;
+  }
+  .hero p {
+    background: #08090ae8;
+    padding: 3px 5px;
+    margin-left: -5px;
+    max-width: 270px;
+    font-size: 13px;
+  }
+  .hero .heroEyebrow > b {
+    font-size: 21px;
+  }
+  .hero:before {
+    top: 57px;
+  }
+  .weightHero {
+    background: #08090a;
+  }
+  .weightLayout {
+    gap: 18px;
+  }
+  .actorHand {
+    width: 160vw;
+    left: 0;
+    top: 5vh;
+  }
+  .actorPaperTail {
+    height: 17vh;
+    bottom: 12vh;
+  }
+}
