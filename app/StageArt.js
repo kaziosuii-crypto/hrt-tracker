@@ -1,5 +1,5 @@
 "use client";
-import { figure } from "../lib/figure-assets";
+import PuppetActor from "./PuppetActor";
 export function ArchivePattern({ className = "" }) {
   return (
     <img
@@ -22,13 +22,9 @@ export function SceneField({ section }) {
   return (
     <div className="sceneField atlasStage" aria-hidden="true">
       <ArchivePattern className="atlasPattern" />
-      <img
-        className="scenePortrait"
-        src={figure("rest")}
-        alt=""
-        width="700"
-        height="700"
-      />
+      <div className="scenePortrait">
+        <PuppetActor />
+      </div>
       <div className="sceneRibbon">
         <b>{titles[section]}</b>
         <span>HRT ATLAS / PERSONAL ARCHIVE</span>

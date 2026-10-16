@@ -1838,3 +1838,312 @@ footer {
     bottom: 12vh;
   }
 }
+/* Access scene: original assembled art, readable typography, no legacy placeholder. */
+.puppetActor {
+  width: 100%;
+  height: 100%;
+  display: block;
+  overflow: visible;
+}
+.puppetActor .rigShoulder,
+.puppetActor .rigElbow,
+.puppetActor .rigHead {
+  transform-origin: 0 0;
+}
+.actorPuppet {
+  position: absolute;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+.auth {
+  max-width: 1600px;
+  padding: 50px 70px;
+  grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+  gap: 0;
+  overflow: hidden;
+}
+.authArtwork {
+  background: #08090a !important;
+  padding: 0;
+  min-height: 760px;
+  height: min(84vh, 900px);
+  overflow: visible;
+  isolation: isolate;
+}
+.authArtwork:before,
+.authArtwork:after,
+.authPanel:before {
+  display: none !important;
+}
+.authPattern {
+  position: absolute;
+  inset: 0;
+  width: 116%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right top;
+  clip-path: polygon(0 3%, 93% 0, 100% 86%, 9% 100%);
+}
+.authActor {
+  position: absolute;
+  inset: 0 -8% -5% -8%;
+}
+.authBrand {
+  position: absolute;
+  width: 65%;
+  left: 0;
+  top: 9%;
+  transform: rotate(-9deg);
+  filter: drop-shadow(3px 5px 0 #08090a);
+}
+.authStamp {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  font:
+    700 12px/1.4 Atlas Condensed,
+    sans-serif;
+  letter-spacing: 0.12em;
+  padding: 8px 14px;
+  background: #eee9df;
+  color: #111;
+  transform: rotate(-3deg);
+}
+.authCaption {
+  position: absolute;
+  bottom: 3%;
+  left: 7%;
+  background: #ef1539;
+  color: white;
+  font:
+    700 17px/1.2 Atlas Condensed,
+    sans-serif;
+  letter-spacing: 0.06em;
+  padding: 8px 18px;
+  transform: rotate(-7deg);
+}
+.authPanel {
+  align-self: center;
+  background: #08090a;
+  color: #eee9df;
+  margin: 0 0 0 -16px;
+  padding: 45px 32px 40px 45px;
+  border-left: 5px solid #ef1539;
+  transform: rotate(-2deg);
+}
+.accessIndex {
+  color: #ef1539;
+  font:
+    700 16px/1.2 Atlas Condensed,
+    sans-serif;
+  letter-spacing: 0.12em;
+}
+.accessWord {
+  margin: 22px 0 30px;
+  font-family:
+    Atlas Heavy,
+    sans-serif;
+  font-style: italic;
+  line-height: 0.9;
+}
+.accessWord > span {
+  display: block;
+  color: #08090a;
+  background: #eee9df;
+  width: max-content;
+  padding: 6px 12px;
+  font-size: clamp(24px, 2.6vw, 42px);
+  transform: rotate(-4deg);
+}
+.accessWord > b {
+  display: block;
+  font-size: clamp(66px, 6.4vw, 100px);
+  color: #eee9df;
+  margin-top: 12px;
+  letter-spacing: 0.025em;
+  font-kerning: none;
+}
+.authPanel h2 {
+  font:
+    800 clamp(24px, 2.3vw, 34px) / 1.5 Atlas Chinese,
+    sans-serif;
+  margin: 0 0 14px;
+}
+.authPanel p {
+  font:
+    500 16px/1.8 Atlas Chinese,
+    sans-serif;
+  color: #c5bfb4;
+}
+.authPanel button {
+  width: 100%;
+  padding: 18px 22px;
+  min-height: 80px;
+  margin-top: 28px;
+  gap: 16px;
+  background: #ef1539;
+  color: #fff;
+  border: none;
+  text-align: left;
+  justify-content: flex-start;
+  transform: rotate(2deg);
+  transition:
+    transform 0.22s cubic-bezier(0.2, 1.5, 0.3, 1),
+    background 0.18s;
+}
+.authPanel button > span {
+  font:
+    800 19px/1.4 Atlas Chinese,
+    sans-serif;
+  flex: 1;
+}
+.authPanel button small {
+  display: block;
+  font:
+    700 12px/1.4 Atlas Condensed,
+    sans-serif;
+  letter-spacing: 0.1em;
+  margin-top: 3px;
+}
+.authPanel button > b {
+  font-size: 35px;
+}
+.authPanel button:hover {
+  background: #bc1230;
+  transform: rotate(0deg) translateX(5px);
+}
+.authPanel button:active {
+  transform: rotate(0deg) scale(0.97);
+}
+.authPanel button:focus-visible {
+  outline: 3px solid #eee9df;
+  outline-offset: 6px;
+}
+.authPanel [role="alert"] {
+  color: #fff;
+  border-left: 3px solid #ef1539;
+  padding-left: 12px;
+}
+@media (min-width: 701px) {
+  .authArtwork {
+    animation: accessArt 0.85s cubic-bezier(0.18, 1.05, 0.3, 1) both;
+  }
+  .authPanel {
+    animation: accessPanel 0.9s 0.12s cubic-bezier(0.18, 1.05, 0.3, 1) both;
+  }
+}
+@keyframes accessArt {
+  from {
+    transform: translate(-18vw, 8vh) rotate(-7deg);
+  }
+  to {
+    transform: none;
+  }
+}
+@keyframes accessPanel {
+  from {
+    transform: translate(25vw, -9vh) rotate(10deg);
+  }
+  to {
+    transform: rotate(-2deg);
+  }
+}
+@media (max-width: 700px) {
+  .auth {
+    display: flex;
+    flex-direction: column;
+    padding: 22px 22px 42px;
+    min-height: 100dvh;
+    gap: 0;
+  }
+  .authArtwork {
+    width: 100%;
+    height: 370px;
+    min-height: 370px;
+    flex: none;
+  }
+  .authPattern {
+    width: 106%;
+    height: 390px;
+  }
+  .authActor {
+    inset: -12px -20px -28px -20px;
+  }
+  .authBrand {
+    top: 15%;
+    width: 65%;
+  }
+  .authStamp {
+    font-size: 10px;
+    padding: 5px 8px;
+  }
+  .authCaption {
+    font-size: 13px;
+    bottom: 1%;
+  }
+  .authPanel {
+    width: 100%;
+    margin: 2px 0 0;
+    padding: 26px 16px 16px;
+    transform: none;
+    border-left: 4px solid #ef1539;
+  }
+  .accessWord {
+    margin: 15px 0 22px;
+  }
+  .accessWord > b {
+    font-size: 64px;
+  }
+  .accessWord > span {
+    font-size: 25px;
+  }
+  .accessIndex {
+    font-size: 13px;
+  }
+  .authPanel h2 {
+    font-size: 24px;
+  }
+  .authPanel p {
+    font-size: 14px;
+  }
+  .authPanel button {
+    min-height: 72px;
+    margin-top: 22px;
+    padding: 15px;
+  }
+  .authPanel button > span {
+    font-size: 17px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .authArtwork,
+  .authPanel {
+    animation: none;
+  }
+  .authPanel button {
+    transition: none;
+  }
+}
+
+/* The incoming static pose appears only when the moving puppet has landed. */
+.content[aria-busy="true"] .scenePortrait {
+  visibility: hidden;
+}
+.authBrand {
+  top: auto;
+  bottom: 13%;
+  width: 68%;
+  left: -2%;
+}
+@media (max-width: 700px) {
+  .authBrand {
+    top: auto;
+    bottom: 13%;
+    width: 68%;
+  }
+}
+
+.scenePortrait .puppetActor {
+  opacity: 1;
+}

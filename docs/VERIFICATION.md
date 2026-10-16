@@ -1,6 +1,12 @@
 # Verification — 2026-10-16
 
-## Current direct-menu revision
+## Current access / puppet follow-up
+
+See ARTICULATED_ACTOR.md. Blank login placeholder is replaced with the original assembled character, proper brand placement and access composition. Four generated, iterated joint sprites total200,700 bytes. The transition uses a hierarchical shoulder/elbow/head rig rather than overlapping whole-pose images. Static portrait is hidden during the moving pose; the phone crop resolves before handoff completion. Production build PASS, first-load JavaScript203kB. Record regression PASS. Access scene tests in Chromium/WebKit at390/1440 PASS: all four image responses200, no document overflow, logo does not obscure the face, Google OAuth provider/redirect request unchanged. No real Google consent performed.
+
+Current puppet verification: Chromium and WebKit full six-page suites PASS at390×844,430×932,1440×1000, including session pointer actions, disclosures, search/export,48 rapid selections per viewport and reduced motion. Final 4×CPU/3.2s rAF samples:390px183 frames,p9516.8ms,two intervals>34ms;1920px162 frames,p9533.4ms,four intervals>34ms. Long tasks were71/57ms on phone and73/68ms desktop. These are cloud browser clocks, not a physical-device60fps guarantee. No client exceptions observed. Final mobile crop/desktop whole-actor frames inspected separately from interaction tests.
+
+## Previous reference-led direct-menu revision
 
 The train has been removed from navigation and login resource loading. See DIRECT_MENU_MOTION.md for actual gameplay-frame evidence and the current 1800ms character / patterned field / information-plane handoff. The covered React view swap is at 460ms; data controls are inert until the composition settles. Three new original generated character layers total 224,150 bytes; the original baked pattern adds 118,150 bytes. Current production build first-load JavaScript is 202kB. No data/API/schema/authentication implementation changed.
 

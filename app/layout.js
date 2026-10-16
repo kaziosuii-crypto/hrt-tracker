@@ -1,5 +1,6 @@
 import "./globals.css";
 import "./direction.css";
+import { rig } from "../lib/rig-assets";
 import { figure } from "../lib/figure-assets";
 export const metadata = {
   title: "HRT Atlas",
@@ -32,11 +33,12 @@ export default function RootLayout({ children }) {
         <link
           rel="preload"
           as="image"
-          href={figure("rest")}
+          href={rig("torso")}
           fetchPriority="high"
         />
-        <link rel="preload" as="image" href={figure("turn")} />
-        <link rel="preload" as="image" href={figure("hand")} />
+        <link rel="preload" as="image" href={rig("head")} />
+        <link rel="preload" as="image" href={rig("upper")} />
+        <link rel="preload" as="image" href={rig("forearm")} />
         <link rel="preload" as="image" href={figure("pattern-v1")} />
       </head>
       <body>{children}</body>

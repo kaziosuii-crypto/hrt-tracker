@@ -32,3 +32,7 @@ Active assets now use /art/atlas-04988e4d9db3/. The accepted original crowds hav
 ## Current reference-led character scene
 
 See DIRECT_MENU_MOTION.md and prompts/atlas-archivist-motion.txt. The three poses were generated together with four actual gameplay reference frames supplied, inspected, split by cell, isolated by connected alpha component, cropped and compressed without enlargement. Reproduce with `node scripts/art/bake-archivist.cjs SOURCE.png`. The generated source stays outside git; only the adopted optimized assets are published. The independent original vector pattern is retained in scripts/art/archive-pattern.svg and baked with sharp at 1600×1280/WebP quality 86. Rest/turn/hand/pattern together are 342,300 bytes. The preceding train assets are no longer loaded.
+
+## Articulated actor follow-up
+
+Current adopted four-part rig and generation/rejection history are documented in ARTICULATED_ACTOR.md. Original edit input and reference frames were supplied again for the second generation. The prior three whole-pose files are historical; current preloads/warm-up use only the four rig sprites and original pattern.

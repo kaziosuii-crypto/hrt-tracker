@@ -24,6 +24,8 @@ import {
 
 import { supabase } from "../lib/supabase";
 import MenuChange from "./MenuChange";
+import PuppetActor from "./PuppetActor";
+import { ArchivePattern } from "./StageArt";
 import { warmFigures } from "../lib/figure-cache";
 import {
   useSceneDirection,
@@ -1105,18 +1107,36 @@ export default function Home() {
   if (!user)
     return (
       <main className="auth">
-        <section className="authArtwork">
-          <small>PRIVATE HEALTH ARCHIVE</small>
-          <b>
-            HRT
-            <br />
-            ATLAS
-          </b>
-          <i>LONGITUDINAL / PERSONAL / YOURS</i>
+        <section
+          className="authArtwork"
+          aria-label="HRT Atlas 原创档案管理员插画"
+        >
+          <ArchivePattern className="authPattern" />
+          <span className="authStamp">PRIVATE HEALTH ARCHIVE</span>
+          <div className="authActor">
+            <PuppetActor />
+          </div>
+          <img
+            className="authBrand"
+            src="/art/atlas-04988e4d9db3/brand-7c320ba9ea.webp"
+            alt="HRT Atlas"
+          />
+          <span className="authCaption">YOUR RECORDS. YOUR STORY.</span>
         </section>
         <section className="authPanel">
-          <h2>私人健康数据终端</h2>
-          <p>登录后查看你的个人记录</p>
+          <span className="accessIndex" aria-hidden="true">
+            01 / ACCESS
+          </span>
+          <div className="accessWord" aria-hidden="true">
+            <span>OPEN YOUR</span>
+            <b>ARCHIVE</b>
+          </div>
+          <h2>开启你的健康档案</h2>
+          <p>
+            体重、身体、用药与每日记录。
+            <br />
+            用你的账户，继续自己的故事。
+          </p>
           <button
             onClick={async () => {
               try {
@@ -1131,7 +1151,11 @@ export default function Home() {
               }
             }}
           >
-            <LogIn size={17} /> 使用 Google 登录
+            <LogIn size={22} />{" "}
+            <span>
+              使用 Google 登录<small>ENTER YOUR ARCHIVE</small>
+            </span>
+            <b aria-hidden="true">↗</b>
           </button>
           {actionError && <p role="alert">{actionError}</p>}
         </section>

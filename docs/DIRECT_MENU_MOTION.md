@@ -1,5 +1,7 @@
 # Reference-led menu scene
 
+The character implementation below is historical. See ARTICULATED_ACTOR.md for the current joint rig, access scene and revised asset set.
+
 Supersedes the train transfer in MOTION_DIRECTION_V3.md and the discarded large-wordmark wipe. Actual reference: the main-menu → cooperation transition at 69.15–70.55 seconds in the inspected public gameplay excerpt, https://www.bilibili.com/video/BV18v4y1S7DG/. A 15fps contact sheet and individual frames at 69.27, 69.45, 69.62 and 70.00 seconds were inspected. Reference frames/video stay outside the repository and are not shipped.
 
 The observed structure is a persistent character, patterned field, left-hand information strips and a late paper tail. A foreground forearm leads the shoulder turn; the incoming information arrives during the turn and the character settles on the right. That composition, rather than an unrelated interstitial or a list of stylistic adjectives, informs this implementation.

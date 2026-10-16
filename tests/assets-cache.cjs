@@ -44,7 +44,7 @@ const assert = require("node:assert/strict");
     assert.match(result.policy, /immutable/);
     assert.equal(result.transfers.at(-1).transfer, 0);
   }
-  assert.equal(results.length, 5);
+  assert.equal(results.length, 6);
   console.log(
     "Versioned art, one-year immutable policy, repeat transfer zero bytes:",
     results,
