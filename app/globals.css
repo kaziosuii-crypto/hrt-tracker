@@ -86,3 +86,28 @@ footer{font-weight:900;letter-spacing:.1em;text-transform:uppercase;border-top:1
  .hero0:before{right:5%;width:65%;background-position:52% 14%;background-size:auto 126%}.hero1:before{right:4%;width:67%;background-position:61% 14%;background-size:auto 126%}.hero2:before{right:5%;width:62%;background-position:27% 12%;background-size:auto 124%}.hero3:before{right:4%;width:65%;background-position:75% 15%;background-size:auto 122%}.hero4:before{right:3%;width:68%;background-position:51% 14%;background-size:auto 126%}.hero5:before{right:5%;width:64%;background-position:53% 14%;background-size:auto 122%}
  .panel{box-shadow:4px 5px #030405}.panel h2{font-size:16px}.sect{font-size:8px}
 }
+
+/* ACCESS COVER: turn the signed-out entry into an original commuter comic panel. */
+.auth{max-width:1180px;min-height:100dvh;position:relative;grid-template-columns:minmax(0,1.12fr) minmax(300px,.72fr);align-items:center;gap:0;padding:28px}
+.authArtwork{position:relative;isolation:isolate;min-height:min(78vh,760px);overflow:hidden;padding:42px 38px;clip-path:polygon(0 0,94% 0,100% 7%,100% 94%,94% 100%,0 100%);box-shadow:12px 12px 0 var(--red);background-image:linear-gradient(90deg,#08090bd9 0%,#08090b9c 38%,#08090b34 72%,#08090b08 100%),url('/hrt-assets/platform.webp');background-position:center;background-size:cover}
+.authArtwork:before{content:"";position:absolute;z-index:1;right:3%;bottom:-8%;width:65%;height:88%;background:url('/hrt-assets/commuter-near.webp') center bottom/contain no-repeat;filter:grayscale(1) contrast(1.25) drop-shadow(7px 5px 0 #07080a);mix-blend-mode:screen;opacity:.94;mask-image:linear-gradient(180deg,transparent 0%,#000 9% 100%);pointer-events:none}
+.authArtwork:after{content:"";position:absolute;z-index:1;right:-1%;top:-4%;width:23%;height:110%;background-image:radial-gradient(#fff9 1px,transparent 1.5px),linear-gradient(155deg,#ff3241 0 45%,#bb0818 45% 100%);background-size:5px 5px,100% 100%;clip-path:polygon(52% 0,100% 0,100% 100%,0 100%);pointer-events:none}
+.authArtwork small,.authArtwork>b,.authArtwork>i{position:relative;z-index:2}
+.authArtwork small{align-self:flex-start;padding:7px 10px;background:#090a0c;color:#fff;box-shadow:4px 4px var(--red);font-weight:1000;letter-spacing:.2em;transform:skewX(-8deg)}
+.authArtwork>b{font-family:Impact,'Arial Narrow',Arial,sans-serif;font-size:clamp(78px,12vw,148px);font-style:italic;line-height:.72;letter-spacing:-.09em;text-shadow:6px 6px var(--red),11px 11px #08090b;transform:skewX(-7deg) rotate(-3deg);-webkit-text-stroke:1px #fff}
+.authArtwork>i{align-self:flex-start;font-style:normal;font-weight:900;letter-spacing:.2em;background:#090a0c;padding:7px 10px;border-left:4px solid var(--red)}
+.authPanel{position:relative;z-index:3;justify-self:start;width:min(100%,370px);margin-left:-42px;padding:34px 30px;background:var(--paper);color:#111216;clip-path:polygon(0 0,96% 0,100% 8%,100% 100%,4% 100%,0 92%);box-shadow:9px 9px 0 #07080a}
+.authPanel:before{content:"ACCESS / 00";display:inline-block;margin-bottom:20px;padding:5px 9px;background:var(--red);color:#fff;font:900 9px/1 Arial,sans-serif;letter-spacing:.2em;transform:rotate(-4deg) skewX(-8deg)}
+.authPanel h2{margin:0;color:#111216;font-size:clamp(21px,2.5vw,28px);font-weight:1000;font-style:italic;letter-spacing:-.04em;text-shadow:2px 2px #fff}
+.authPanel p{color:#45464b;font-size:11px}
+.authPanel button{background:var(--red);color:#fff;box-shadow:4px 4px #700712;clip-path:polygon(0 0,95% 0,100% 13%,100% 100%,5% 100%,0 88%);font-weight:1000;transition:transform .2s cubic-bezier(.2,1.4,.35,1)}
+.authPanel button:active{transform:translate(2px,2px) skewX(-4deg);box-shadow:2px 2px #700712}
+@media(max-width:700px){
+ .auth{grid-template-columns:1fr;align-content:center;gap:0;padding:15px;min-height:100svh}
+ .authArtwork{min-height:52svh;padding:25px 19px 22px;background-position:54% center;box-shadow:7px 8px 0 var(--red);clip-path:polygon(0 0,94% 0,100% 8%,100% 94%,93% 100%,0 100%)}
+ .authArtwork:before{right:0;bottom:-5%;width:76%;height:76%;background-position:65% bottom;opacity:.9}
+ .authArtwork:after{width:18%}
+ .authArtwork small{font-size:7px;letter-spacing:.14em}.authArtwork>b{font-size:clamp(76px,23vw,106px);text-shadow:4px 5px var(--red),7px 8px #08090b}.authArtwork>i{font-size:7px;letter-spacing:.14em;padding:6px 7px}
+ .authPanel{justify-self:end;width:min(87%,340px);margin:-24px 7px 0 0;padding:24px 20px;box-shadow:6px 6px #07080a}
+ .authPanel:before{margin-bottom:13px}.authPanel h2{font-size:21px}.authPanel button{min-height:48px;padding:12px 14px}
+}
