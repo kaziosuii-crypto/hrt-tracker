@@ -1,6 +1,7 @@
 import "./globals.css";
 import "./direction.css";
 import { figure } from "../lib/figure-assets";
+import MealPhotoEnhancer from "./MealPhotoEnhancer";
 export const metadata = {
   title: "HRT Atlas",
   description: "Private longitudinal HRT dashboard",
@@ -39,7 +40,7 @@ export default function RootLayout({ children }) {
         <link rel="preload" as="image" href={figure("hand")} />
         <link rel="preload" as="image" href={figure("pattern-v1")} />
       </head>
-      <body>{children}</body>
+      <body>{children}<MealPhotoEnhancer /></body>
     </html>
   );
 }
