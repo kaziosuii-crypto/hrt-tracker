@@ -1,5 +1,5 @@
 const { chromium } = require("playwright");
-const { setup, session } = require("./browser.cjs");
+const { setup, session, authStorage } = require("./browser.cjs");
 const assert = require("node:assert/strict");
 async function main() {
   const browser = await chromium.launch({
@@ -25,14 +25,17 @@ async function main() {
   await p.getByRole("button", { name: "刷新", exact: true }).click();
   await p.waitForTimeout(1100);
   assert.equal(await p.locator(".weightHero>strong").textContent(), "72kg");
-  await p.evaluate((s) => {
-    const c = new BroadcastChannel("sb-test-auth-token");
-    c.postMessage({
-      event: "TOKEN_REFRESHED",
-      session: { ...s, access_token: "test-refreshed-token" },
-    });
-    setTimeout(() => c.close(), 100);
-  }, session);
+  await p.evaluate(
+    ({ s, key }) => {
+      const c = new BroadcastChannel(key);
+      c.postMessage({
+        event: "TOKEN_REFRESHED",
+        session: { ...s, access_token: "test-refreshed-token" },
+      });
+      setTimeout(() => c.close(), 100);
+    },
+    { s: session, key: authStorage },
+  );
   await p.waitForTimeout(300);
   assert.equal(await p.locator(".weightHero>strong").textContent(), "72kg");
   await context.route("**/api/data?view=weight_trend", async (r) => {
@@ -55,7 +58,7 @@ async function main() {
   });
   await slow.page.waitForTimeout(300);
   await slow.page.locator(".tabs button").nth(3).click();
-  await slow.page.waitForTimeout(2400);
+  await slow.page.waitForTimeout(3000);
   assert.equal(await slow.page.locator(".commute").count(), 0);
   await slow.page.getByRole("button", { name: "刷新", exact: true }).click();
   await slow.page.waitForTimeout(4700);

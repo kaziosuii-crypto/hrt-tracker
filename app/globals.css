@@ -856,7 +856,7 @@ footer {
   padding: 45px;
   isolation: isolate;
   overflow: hidden;
-  background: #555 url("/art/carriage.webp") center/cover;
+  background: #555 url("/art/atlas-09ce5461945a/carriage.webp") center/cover;
 }
 .authArtwork:before {
   content: "";
@@ -872,7 +872,8 @@ footer {
   right: -15%;
   width: 90%;
   height: 90%;
-  background: url("/art/passengers-mid.webp") center bottom/contain no-repeat;
+  background: url("/art/atlas-09ce5461945a/passengers-mid.webp") center
+    bottom/contain no-repeat;
   z-index: -1;
 }
 .authArtwork small,
@@ -1400,10 +1401,10 @@ footer {
   color: #ddd;
 }
 .authArtwork {
-  background-image: url("/art/carriage.webp");
+  background-image: url("/art/atlas-09ce5461945a/carriage.webp");
 }
 .authArtwork:after {
-  background-image: url("/art/passengers-mid.webp");
+  background-image: url("/art/atlas-09ce5461945a/passengers-mid.webp");
   height: 65%;
   width: 170%;
   right: -55%;
@@ -1574,7 +1575,7 @@ footer {
 }
 @media (max-width: 700px) {
   .authArtwork {
-    background-image: url("/art/carriage-mobile.webp");
+    background-image: url("/art/atlas-09ce5461945a/carriage-mobile.webp");
   }
 }
 /* Wordmarks are interactive navigation labels; page headings stay typographic. */
@@ -3239,5 +3240,482 @@ body {
     height: 128%;
     bottom: -23%;
     left: 50%;
+  }
+}
+/* Atlas motion edition: local display typography; quiet, readable record text. */
+@font-face {
+  font-family: Atlas Heavy;
+  src: url("/fonts/atlas-heavy-a1954717bc.woff2") format("woff2");
+  font-weight: 900;
+  font-style: italic;
+  font-display: swap;
+}
+@font-face {
+  font-family: Atlas Condensed;
+  src: url("/fonts/atlas-condensed-4afdf787ec.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+@font-face {
+  font-family: Atlas Display;
+  src: url("/fonts/atlas-display-392bb82dd5.woff2") format("woff2");
+  font-display: swap;
+}
+.top {
+  padding-block: 16px;
+  border-bottom: 1px solid #555;
+}
+.top strong,
+.heroEyebrow b,
+.toolbar > span,
+.sect small,
+.transit-destination strong {
+  font-family:
+    Atlas Heavy,
+    sans-serif;
+  font-style: italic;
+}
+.tabs {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  gap: 12px;
+  padding-block: 18px 14px;
+}
+.tabs::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+.tabs button,
+.tabs button.active {
+  min-width: 0;
+  max-width: none;
+  min-height: 88px;
+}
+.navWord,
+.tabs button.active .navWord,
+.tabs button:hover .navWord,
+.tabs button:active .navWord {
+  animation: none;
+  transition: filter 0.2s;
+  transform: none;
+}
+.navWord {
+  max-width: 100%;
+  width: clamp(90px, 12vw, 180px);
+  height: 48px;
+}
+.navLabel b {
+  font-family:
+    Atlas Display,
+    sans-serif;
+  font-weight: 400;
+  font-size: 17px;
+}
+.hero,
+.hero0,
+.hero1,
+.hero2,
+.hero3,
+.hero4,
+.hero5 {
+  min-height: 135px;
+  padding: 14px 0 27px 92px;
+  margin: 8px 0 18px;
+  display: block;
+}
+.hero:before {
+  font-family:
+    Atlas Heavy,
+    sans-serif;
+  font-size: 110px;
+  bottom: 21px;
+  letter-spacing: -0.07em;
+}
+.hero:after {
+  display: none;
+}
+.heroEyebrow {
+  margin-bottom: 12px;
+}
+.heroEyebrow > b {
+  font-size: 20px;
+  line-height: 1;
+  padding: 4px 12px 6px;
+  letter-spacing: 0.015em;
+}
+.heroEyebrow span {
+  font-size: 10px;
+}
+.hero h1 {
+  font-family:
+    Atlas Display,
+    sans-serif;
+  font-weight: 400;
+  font-size: clamp(34px, 4vw, 52px);
+  line-height: 1.2;
+  letter-spacing: 0.025em;
+  margin-bottom: 8px;
+  transform: rotate(-1.5deg);
+  transform-origin: left;
+}
+.headlineGlyph {
+  display: inline-block;
+}
+.hero p {
+  font-size: 15px;
+  line-height: 1.6;
+  color: #c4c1bc;
+  max-width: 760px;
+}
+.chapter-rule {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 18px;
+  overflow: visible;
+  pointer-events: none;
+}
+.chapter-rule path {
+  fill: none;
+  stroke: #f5f1e8;
+  stroke-width: 3;
+}
+.toolbar {
+  padding-block: 6px 12px;
+}
+.weightLayout {
+  margin-bottom: 26px;
+}
+.weightHero {
+  padding: 24px 28px 26px;
+}
+.weightHero > strong {
+  font-family:
+    Atlas Heavy,
+    sans-serif;
+  font-size: clamp(92px, 11vw, 156px);
+  letter-spacing: -0.045em;
+  margin: 7px 0;
+  line-height: 1;
+}
+.weightHero > small {
+  font-size: 13px;
+}
+.stats b {
+  font-family:
+    Atlas Condensed,
+    sans-serif;
+  font-size: 27px;
+}
+.extras {
+  font-size: 14px;
+}
+.panel > h2,
+.sect h2,
+.bodyRegion > summary > b,
+.daily summary b,
+.foodDay h2 {
+  font-family:
+    Atlas Display,
+    sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.03em;
+}
+.panel {
+  border-radius: 0;
+  box-shadow: none;
+}
+.panel > h2 {
+  font-size: 24px;
+}
+.bodyRegion {
+  border-left: 3px solid #ed1731;
+  background: linear-gradient(110deg, #191919, transparent 60%);
+  padding: 18px 20px;
+  margin-block: 22px;
+}
+.bodyRegion > summary {
+  font-size: 20px;
+}
+.metric {
+  border: 0;
+  border-top: 1px solid #575450;
+  padding-block: 16px;
+  background: none;
+}
+.metric > b {
+  font-size: 15px;
+  color: #eee9df;
+}
+.metric > strong,
+.pair strong {
+  font-family:
+    Atlas Condensed,
+    sans-serif;
+  font-size: 30px;
+  line-height: 1.2;
+  font-weight: 700;
+}
+.pair > span {
+  font-size: 13px;
+}
+.medicine {
+  border: 0;
+  border-bottom: 1px solid #514c48;
+  background: transparent;
+  padding-block: 20px;
+}
+.medicine h3 {
+  font-size: 22px;
+}
+.analyte {
+  border-radius: 0;
+  border: 0;
+  border-bottom: 1px solid #514c48;
+  background: none;
+  padding-block: 18px;
+}
+.analyte strong {
+  font-family:
+    Atlas Condensed,
+    sans-serif;
+  font-size: 32px;
+}
+.facts span {
+  font-size: 14px;
+}
+.facts b {
+  font-family:
+    Atlas Condensed,
+    sans-serif;
+  font-size: 25px;
+}
+.intake {
+  border-radius: 0;
+  background: none;
+  border: 0;
+  border-bottom: 1px solid #575450;
+  padding-block: 18px;
+}
+.intake h3 {
+  font-size: 19px;
+}
+.weightRow {
+  font-size: 15px;
+}
+.weightRow strong {
+  font-family:
+    Atlas Condensed,
+    sans-serif;
+  font-size: 27px;
+}
+.details {
+  font-size: 13px;
+}
+.details summary {
+  padding-block: 9px;
+  min-height: 38px;
+}
+.details dl {
+  margin: 0;
+}
+.disclosureBody {
+  min-width: 0;
+}
+.disclosureBody .metrics {
+  margin-top: 14px;
+}
+.commute-bank,
+.train-interior,
+.passengers-far,
+.passengers-mid,
+.passengers-near,
+.transit-destination {
+  animation: none !important;
+}
+.commute-bank {
+  inset: 0 -28px;
+  transform: translateX(-110%);
+  clip-path: polygon(
+    0 0,
+    99.5% 0,
+    99.8% 8%,
+    99.2% 16%,
+    100% 23%,
+    99.5% 31%,
+    99.9% 40%,
+    99.3% 47%,
+    100% 56%,
+    99.4% 63%,
+    99.8% 73%,
+    99.2% 82%,
+    100% 91%,
+    99.5% 100%,
+    0.4% 100%,
+    0 92%,
+    0.7% 84%,
+    0.2% 75%,
+    0.8% 66%,
+    0 57%,
+    0.5% 48%,
+    0 39%,
+    0.7% 30%,
+    0.1% 21%,
+    0.6% 12%
+  );
+  -webkit-mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 22px,
+    #000 calc(100% - 22px),
+    transparent
+  );
+  mask-image: linear-gradient(
+    90deg,
+    transparent,
+    #000 22px,
+    #000 calc(100% - 22px),
+    transparent
+  );
+}
+.passengers-near {
+  transform: translateX(-180%);
+}
+.transit-destination {
+  opacity: 0;
+}
+@media (min-width: 701px) {
+  .tabs {
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    overflow: visible;
+  }
+  .tabs button {
+    width: 100%;
+  }
+  .heroEyebrow {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+}
+@media (max-width: 700px) {
+  .tabs {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding-block: 14px 12px;
+  }
+  .tabs button,
+  .tabs button.active {
+    min-width: 116px;
+    max-width: 126px;
+    min-height: 86px;
+  }
+  .navWord {
+    width: 108px;
+    height: 40px;
+  }
+  .hero,
+  .hero0,
+  .hero1,
+  .hero2,
+  .hero3,
+  .hero4,
+  .hero5 {
+    padding: 12px 0 24px 53px;
+    min-height: 136px;
+  }
+  .hero:before {
+    font-size: 68px;
+    left: -5px;
+    bottom: 31px;
+  }
+  .hero h1 {
+    font-size: 35px;
+  }
+  .hero p {
+    font-size: 13px;
+  }
+  .heroEyebrow span {
+    font-size: 8px;
+  }
+  .heroEyebrow > b {
+    font-size: 16px;
+  }
+  .heroEyebrow {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .weightHero {
+    padding: 24px;
+  }
+  .weightHero > strong {
+    font-size: 112px;
+  }
+  .bodyRegion {
+    padding: 14px 12px;
+  }
+  .metric > strong,
+  .pair strong {
+    font-size: 28px;
+  }
+  .toolbar input {
+    width: 160px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .navWord,
+  .headlineGlyph {
+    transform: none !important;
+  }
+  .commute {
+    display: none;
+  }
+  .chapter-rule path {
+    stroke-dasharray: none !important;
+  }
+}
+.weightHero {
+  padding-right: 48px;
+}
+.weightHero > strong {
+  font-style: italic;
+  font-weight: 900;
+}
+.weightRow {
+  padding-block: 17px;
+  min-height: 0;
+}
+.weightRow .details {
+  margin-top: 5px;
+}
+.weightRow .details summary {
+  padding-block: 5px;
+}
+.panel > h2 {
+  font-family:
+    Atlas Heavy,
+    Atlas Display,
+    sans-serif;
+  font-style: italic;
+}
+.bodyRegion > summary svg {
+  transition: transform 0.42s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.bodyRegion[open] > summary svg {
+  transform: rotate(180deg);
+}
+@media (max-width: 700px) {
+  .weightHero {
+    padding-right: 32px;
+  }
+  .weightRow {
+    padding-block: 17px;
+  }
+  .bodyRegion > .disclosureBody > .metrics {
+    display: grid;
   }
 }

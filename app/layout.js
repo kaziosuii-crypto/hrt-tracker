@@ -9,23 +9,41 @@ export default function RootLayout({ children }) {
       <head>
         <link
           rel="preload"
+          as="font"
+          href="/fonts/atlas-heavy-a1954717bc.woff2"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
+          as="font"
+          href="/fonts/atlas-display-392bb82dd5.woff2"
+          type="font/woff2"
+          crossOrigin="anonymous"
+        />
+        <link
+          rel="preload"
           as="image"
-          href="/art/passengers-mid.webp"
+          href="/art/atlas-09ce5461945a/passengers-mid.webp"
           fetchPriority="high"
         />
         <link
           rel="preload"
           as="image"
-          href="/art/carriage.webp"
+          href="/art/atlas-09ce5461945a/carriage.webp"
           media="(min-width:701px)"
         />
         <link
           rel="preload"
           as="image"
-          href="/art/carriage-mobile.webp"
+          href="/art/atlas-09ce5461945a/carriage-mobile.webp"
           media="(max-width:700px)"
         />
-        <link rel="preload" as="image" href="/art/passengers-far.webp" />
+        <link
+          rel="preload"
+          as="image"
+          href="/art/atlas-09ce5461945a/passengers-far.webp"
+        />
       </head>
       <body>{children}</body>
     </html>

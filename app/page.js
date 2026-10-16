@@ -25,6 +25,13 @@ import {
 import { supabase } from "../lib/supabase";
 import Commute from "./Commute";
 import {
+  NavButton,
+  useHeadlineMotion,
+  useStageMotion,
+  MotionDetails,
+} from "./Motion";
+import { warmArt } from "../lib/art-cache";
+import {
   recordedAt,
   sessionKey,
   sessionDate,
@@ -123,8 +130,7 @@ function group(rows, key) {
 const batch = sessionKey;
 function Details({ r }) {
   return (
-    <details className="details">
-      <summary>来源 / 原始记录</summary>
+    <MotionDetails className="details" summary="来源 / 原始记录">
       <dl>
         {Object.entries(r || {})
           .filter(([k, v]) => v != null && typeof v !== "object")
@@ -135,13 +141,16 @@ function Details({ r }) {
             </div>
           ))}
       </dl>
-    </details>
+    </MotionDetails>
   );
 }
 function Head({ i, title, desc }) {
+  const ref = useRef(null);
+  useHeadlineMotion(ref);
   const t = tabs[i];
   return (
     <header
+      ref={ref}
       className={"hero hero" + i}
       data-chapter={String(i + 1).padStart(2, "0")}
     >
@@ -149,6 +158,9 @@ function Head({ i, title, desc }) {
         <span>HRT ATLAS / {String(i + 1).padStart(2, "0")}</span>
         <b>{t[2]}</b>
       </div>
+      <svg className="chapter-rule" viewBox="0 0 600 20" aria-hidden="true">
+        <path d="M2 14 L580 4 L568 15" />
+      </svg>
       <div className="heroCopy">
         <h1>{title}</h1>
         <p>{desc}</p>
@@ -401,16 +413,18 @@ function BodyPage({ rows }) {
             </div>
           )}
           {cats.map(([cat, x], ci) => (
-            <details
+            <MotionDetails
               className="panel bodyRegion"
               key={sel + cat}
-              open={ci === 0}
+              initialOpen={ci === 0}
+              summary={
+                <>
+                  <b>{cat}</b>
+                  <span>{new Set(x.map((r) => r.metric)).size} 个指标</span>
+                  <ChevronDown size={18} />
+                </>
+              }
             >
-              <summary>
-                <b>{cat}</b>
-                <span>{new Set(x.map((r) => r.metric)).size} 个指标</span>
-                <ChevronDown size={18} />
-              </summary>
               <div className="metrics" key={sel}>
                 {Array.from(group(x, (r) => r.metric || "未命名指标")).map(
                   ([m, ys]) => {
@@ -449,7 +463,7 @@ function BodyPage({ rows }) {
                   },
                 )}
               </div>
-            </details>
+            </MotionDetails>
           ))}
         </>
       ) : (
@@ -857,6 +871,7 @@ function Content({ id, data, rows, foods, retry }) {
   }
 }
 export default function Home() {
+  const stage = useRef(null);
   const [user, U] = useState(null),
     [token, T] = useState(null),
     [ready, R] = useState(false),
@@ -986,34 +1001,14 @@ export default function Home() {
   }, [id, token, load]);
   useEffect(() => {
     let active = true;
-    const files = [
-      "carriage.webp",
-      "carriage-mobile.webp",
-      "passengers-far.webp",
-      "passengers-mid.webp",
-      "passengers-near.webp",
-    ];
-    Promise.all(
-      files.map(
-        (file) =>
-          new Promise((resolve) => {
-            const image = new Image();
-            image.onload = () =>
-              image
-                .decode?.()
-                .catch(() => {})
-                .finally(resolve) || resolve();
-            image.onerror = () => resolve(false);
-            image.src = "/art/" + file;
-          }),
-      ),
-    ).then((results) => {
-      if (active) assetsReady.current = results.every((x) => x !== false);
+    warmArt().then((ready) => {
+      if (active) assetsReady.current = ready;
     });
     return () => {
       active = false;
     };
   }, []);
+  useStageMotion(stage, id, !!data[id]?.loaded);
   const choose = (v) => {
     load(v, token);
     if (animating.current) {
@@ -1153,23 +1148,23 @@ export default function Home() {
       </header>
       <nav className="tabs">
         {tabs.map(([v, name, en, Ico], index) => (
-          <button
+          <NavButton
             key={v}
-            aria-label={name}
-            aria-current={v === id ? "page" : undefined}
-            className={v === (target || id) ? "active" : ""}
+            label={name}
+            active={v === (target || id)}
+            current={v === id}
             onClick={() => choose(v)}
           >
             <img
               className="navWord"
-              src={"/art/title-" + index + ".webp"}
+              src={"/art/atlas-09ce5461945a/title-" + index + ".webp"}
               alt=""
             />
             <span className="navLabel">
               <Ico size={15} />
               <b>{name}</b>
             </span>
-          </button>
+          </NavButton>
         ))}
       </nav>
       <div className="toolbar">
@@ -1197,7 +1192,7 @@ export default function Home() {
           {actionError}
         </p>
       )}
-      <section className="content" key={id} data-section={id}>
+      <section ref={stage} className="content" key={id} data-section={id}>
         <DataBoundary key={id} retry={retry}>
           <Content
             id={id}

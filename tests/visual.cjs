@@ -11,32 +11,31 @@ const assert = require("node:assert/strict");
         }
       : { headless: true },
   );
-  const { page: p, context, errors } = await setup(browser, 390, 844);
+  const {
+    page: p,
+    context,
+    errors,
+  } = await setup(browser, 390, 844, "no-preference", true);
   await p.locator(".weightHero").waitFor();
   await p.waitForTimeout(400);
   await p.screenshot({
     path: "/tmp/hrt-review/final-weight.png",
     fullPage: true,
   });
-  await p.locator(".tabs button").nth(1).click();
-  await p.waitForTimeout(250); // Freeze every CSS layer to inspect exact choreography without screenshot timing drift.
-  for (const ms of [450, 700, 1000, 1060, 1200, 1550, 1850]) {
-    await p.evaluate((ms) => {
-      for (const a of document.getAnimations()) {
-        if (a.effect?.target?.closest(".commute")) {
-          a.pause();
-          a.currentTime = ms;
-        }
-      }
-    }, ms);
+  await p.clock.pauseAt(new Date());
+  await p
+    .locator(".tabs button")
+    .nth(1)
+    .evaluate((el) => el.click());
+  let previous = 0;
+  for (const ms of [450, 700, 1000, 1420, 1700, 2100, 2500]) {
+    await p.clock.runFor(ms - previous);
+    previous = ms;
     await p.screenshot({
       path: `/tmp/hrt-review/transit-${process.env.HRT_ENGINE || "chromium"}-${ms}.png`,
     });
   }
-  await p.evaluate(() => {
-    for (const a of document.getAnimations()) a.play();
-  });
-  await p.waitForTimeout(2300);
+  await p.clock.runFor(600);
   assert.deepEqual(errors, []);
   console.log("visual keyframes captured; runtime errors=0");
   await context.close();

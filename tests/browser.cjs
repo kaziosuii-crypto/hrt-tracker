@@ -8,6 +8,7 @@ const records = JSON.parse(
     "utf8",
   ),
 );
+const authStorage = process.env.HRT_AUTH_STORAGE || "sb-test-auth-token";
 const base = process.env.TEST_URL || "http://localhost:3000";
 const session = {
   access_token: "test-browser-token",
@@ -22,15 +23,21 @@ const session = {
     role: "authenticated",
   },
 };
-async function setup(browser, width, height, reducedMotion = "no-preference") {
+async function setup(
+  browser,
+  width,
+  height,
+  reducedMotion = "no-preference",
+  clock = false,
+) {
   const context = await browser.newContext({
     viewport: { width, height },
     reducedMotion,
     ignoreHTTPSErrors: true,
   });
   await context.addInitScript(
-    (s) => localStorage.setItem("sb-test-auth-token", JSON.stringify(s)),
-    session,
+    ({ s, key }) => localStorage.setItem(key, JSON.stringify(s)),
+    { s: session, key: authStorage },
   );
   await context.route("**/auth/v1/**", (r) => r.fulfill({ json: session }));
   await context.route("**/api/data?*", async (r) => {
@@ -39,6 +46,7 @@ async function setup(browser, width, height, reducedMotion = "no-preference") {
     await r.fulfill({ json: records[view] || [] });
   });
   const page = await context.newPage();
+  if (clock) await page.clock.install();
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(base);
@@ -67,7 +75,7 @@ async function main() {
     const names = ["体重", "身体", "HRT", "化验", "每日", "饮食"];
     for (let i = 0; i < 6; i++) {
       await p.locator(".tabs button").nth(i).click();
-      await p.waitForTimeout(2250);
+      await p.waitForTimeout(2850);
       await p.screenshot({
         path: `/tmp/hrt-review/${width}-${i}.png`,
         fullPage: true,
@@ -107,7 +115,7 @@ async function main() {
       .locator(".tabs button")
       .nth(5)
       .evaluate((el) => el.click());
-    await p.locator(".commute").waitFor({ state: "detached", timeout: 6500 });
+    await p.locator(".commute").waitFor({ state: "detached", timeout: 8500 });
     assert.equal(
       await p.locator(".tabs button[aria-current=page] b").textContent(),
       "饮食",
@@ -144,7 +152,7 @@ async function main() {
   await browser.close();
   console.log("Reduced motion: PASS");
 }
-module.exports = { setup, session };
+module.exports = { setup, session, authStorage };
 if (require.main === module)
   main().catch((e) => {
     console.error(e);
