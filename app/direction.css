@@ -1,0 +1,1514 @@
+@font-face {
+  font-family: Atlas Chinese;
+  src: url("/fonts/atlas-chinese-a03fe24c6d.woff2") format("woff2");
+  font-weight: 800;
+  font-display: swap;
+}
+@font-face {
+  font-family: Atlas Numbers;
+  src: url("/fonts/atlas-numbers-304d9c1758.woff2") format("woff2");
+  font-weight: 700;
+  font-display: swap;
+}
+:root {
+  --accent: #ef1235;
+  --paper: #f5f2e9;
+  --record-font: Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+body {
+  font-family: var(--record-font);
+  font-weight: 500;
+  background: #08090a;
+  color: var(--paper);
+}
+.app {
+  position: relative;
+  isolation: isolate;
+  max-width: 1680px;
+  padding: 0 38px 32px;
+}
+.app:before {
+  display: none;
+}
+.top {
+  height: 100px;
+  border-bottom: 2px solid #565351;
+  padding-block: 8px;
+}
+.brand {
+  letter-spacing: 0;
+  min-width: 0;
+}
+.brandLogo {
+  display: block;
+  width: 275px;
+  height: auto;
+  max-height: 82px;
+  object-fit: contain;
+  object-position: left center;
+}
+.user {
+  font-size: 12px;
+  color: #d3d0c8;
+}
+.user button {
+  border: 2px solid #787571;
+}
+.tabs {
+  padding-block: 15px 14px;
+  gap: 22px;
+}
+.tabs button,
+.tabs button.active {
+  min-height: 92px;
+  gap: 9px;
+}
+.navWord {
+  height: 48px;
+  width: min(100%, 185px);
+}
+.navLabel b {
+  font-family: var(--record-font);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+}
+.navLabel {
+  color: #c3c0bc;
+}
+.toolbar {
+  min-height: 64px;
+  gap: 16px;
+  padding-block: 8px 12px;
+  align-items: center;
+}
+.toolbar > span {
+  display: block;
+  font:
+    700 20px/1 Atlas Condensed,
+    sans-serif;
+  letter-spacing: 0.06em;
+  color: #c4bfb8;
+}
+.toolbar > span i {
+  color: var(--accent);
+  font-style: normal;
+  margin-inline: 8px;
+}
+.toolbar label {
+  position: relative;
+  isolation: isolate;
+  background: none;
+  border: 0;
+  gap: 10px;
+  padding: 5px 16px 5px 45px;
+  margin-left: auto;
+  min-height: 46px;
+  color: #111;
+  min-width: 0;
+}
+.toolbar label:before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--paper);
+  clip-path: polygon(3% 0, 100% 0, 96% 100%, 0 100%);
+}
+.toolbar .searchTag {
+  position: absolute;
+  left: -8px;
+  top: 8px;
+  font:
+    700 17px/1 Atlas Condensed,
+    sans-serif;
+  padding: 6px 8px;
+  color: #fff;
+  background: var(--accent);
+  transform: rotate(-6deg);
+}
+.toolbar label:focus-within:before {
+  background: #fff;
+}
+.toolbar input {
+  width: 210px;
+  color: #111;
+  font: 600 15px/1.4 var(--record-font);
+  background: none;
+  min-height: 34px;
+  outline-offset: 0;
+}
+.toolbar input::placeholder {
+  color: #555;
+}
+.toolbar > button {
+  border: 0;
+  background: #262528;
+  color: #fff;
+  transform: skew(-6deg);
+  min-width: 46px;
+  min-height: 46px;
+}
+.toolbar > button svg {
+  width: 21px;
+  height: 21px;
+  transform: skew(6deg);
+}
+.content {
+  position: relative;
+  isolation: isolate;
+  transform-origin: 50% 200px;
+}
+.content,
+.content .hero,
+.content .panel,
+.content .weightHero,
+.content .plan,
+.content .lab,
+.content .daily,
+.content .foodDay,
+.content .metric,
+.content .medicine,
+.content .analyte,
+.content .intake,
+.content .weightRow {
+  animation: none !important;
+}
+.sceneField {
+  position: absolute;
+  inset: -10px -20px auto;
+  z-index: -1;
+  height: 720px;
+  overflow: hidden;
+  pointer-events: none;
+  contain: paint;
+}
+.sceneField svg {
+  width: 100%;
+  height: 100%;
+  color: #e5dfd3;
+}
+.fieldInk {
+  fill: var(--accent);
+  opacity: 0.75;
+}
+.fieldPaper {
+  fill: var(--paper);
+  opacity: 0.8;
+}
+.fieldDots {
+  opacity: 0.26;
+}
+.fieldNumber {
+  font:
+    700 260px Atlas Numbers,
+    sans-serif;
+  fill: #08090a;
+}
+.fieldSlash {
+  fill: #4f4d49;
+  opacity: 0.5;
+}
+.field2 svg {
+  transform: scaleX(-1);
+}
+.field3 .fieldInk {
+  fill: #76142c;
+}
+.field4 .fieldInk {
+  fill: #e9e3d6;
+}
+.field4 .fieldPaper {
+  fill: var(--accent);
+}
+.field5 .fieldInk {
+  fill: #b71c35;
+}
+.field6 .fieldDots {
+  opacity: 0.5;
+}
+.hero,
+.hero0,
+.hero1,
+.hero2,
+.hero3,
+.hero4,
+.hero5 {
+  position: relative;
+  padding: 16px 0 24px 76px;
+  margin: 0 0 12px;
+  min-height: 126px;
+  background: none !important;
+  display: block;
+  overflow: visible;
+}
+.hero:before {
+  font:
+    700 74px/0.85 Atlas Numbers,
+    sans-serif;
+  letter-spacing: 0;
+  left: 0;
+  top: 47px;
+  bottom: auto;
+  z-index: 0;
+  color: var(--accent);
+}
+.hero h1 {
+  font-family:
+    Atlas Chinese,
+    var(--record-font);
+  font-size: 38px;
+  font-weight: 800;
+  line-height: 1.3;
+  letter-spacing: 0.06em;
+  transform: none;
+  margin: 0 0 8px;
+  text-shadow: none;
+  max-width: 100%;
+}
+.heroEyebrow {
+  margin: 0 0 10px;
+  gap: 13px;
+}
+.heroEyebrow span {
+  font: 700 11px/1 var(--record-font);
+  letter-spacing: 0.1em;
+  color: #c3beb6;
+}
+.heroEyebrow > b {
+  font-family:
+    Atlas Condensed,
+    sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 25px;
+  padding: 4px 14px 6px;
+  line-height: 1;
+  letter-spacing: 0.025em;
+  transform: rotate(-2deg);
+}
+.hero p {
+  font: 500 15px/1.6 var(--record-font);
+  color: #d8d4cb;
+  max-width: 800px;
+}
+.chapter-rule {
+  display: none;
+}
+.weightLayout {
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 34px;
+  margin: 0 0 28px;
+  align-items: stretch;
+  isolation: isolate;
+}
+.weightLayout:before {
+  display: none;
+}
+.weightHero {
+  position: relative;
+  isolation: isolate;
+  background: none;
+  clip-path: none;
+  padding: 16px 8px 12px;
+  margin: 0;
+  min-width: 0;
+}
+.weightHero:before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  top: 58px;
+  left: -13px;
+  right: -6px;
+  height: 166px;
+  background: var(--accent);
+  clip-path: polygon(0 10%, 97% 0, 100% 89%, 4% 100%);
+}
+.weightHero > strong {
+  display: flex;
+  align-items: baseline;
+  gap: 15px;
+  font:
+    700 clamp(92px, 8.9vw, 145px) / 1.25 Atlas Numbers,
+    sans-serif;
+  font-style: normal;
+  font-kerning: none;
+  letter-spacing: 0.018em;
+  font-variant-numeric: tabular-nums;
+  margin: 10px 0 22px;
+  padding-left: 7px;
+  white-space: nowrap;
+}
+.weightHero > strong i {
+  font:
+    700 29px/1 Atlas Numbers,
+    sans-serif;
+  letter-spacing: 0;
+  margin: 0;
+}
+.latestStamp {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font:
+    700 19px/1.2 Atlas Condensed,
+    sans-serif;
+  letter-spacing: 0.07em;
+}
+.latestStamp > span {
+  font: 600 14px/1.4 var(--record-font);
+  letter-spacing: 0.015em;
+  color: #eee;
+}
+.stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 0;
+}
+.stats span {
+  font: 600 14px/1.6 var(--record-font);
+  color: #ddd7cf;
+  min-width: 0;
+}
+.stats b {
+  display: block;
+  font:
+    700 clamp(22px, 2.2vw, 34px) / 1.45 Atlas Numbers,
+    sans-serif;
+  color: #fff;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+.extras {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  border-top: 3px solid #514b48;
+  margin-top: 13px;
+  padding-top: 12px;
+  font: 600 14px/1.6 var(--record-font);
+  color: #d9d4cd;
+}
+.extras b {
+  font: 700 14px/1.6 var(--record-font);
+  color: #fff;
+}
+.trajectory {
+  background: #101113;
+  color: var(--paper);
+  clip-path: none;
+  padding: 15px 20px 18px !important;
+  border: 0;
+  border-left: 4px solid var(--paper);
+  overflow: visible;
+  min-width: 0;
+}
+.trajectory .sect {
+  color: var(--paper);
+  gap: 16px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+.trajectory .sect > b {
+  font:
+    700 29px/1 Atlas Condensed,
+    sans-serif;
+  letter-spacing: 0.035em;
+}
+.trajectory .sect > b i {
+  color: #d6cfc7;
+  font-size: 17px;
+  font-style: normal;
+}
+.trajectory .sect small {
+  font: 600 13px/1.5 var(--record-font);
+  color: #ded8cf;
+  white-space: nowrap;
+}
+.trajectory .chart {
+  height: auto;
+  max-height: 265px;
+  width: 100%;
+  display: block;
+}
+.trajectory .chart text {
+  font:
+    600 17px Arial,
+    sans-serif;
+  fill: #eee8df;
+}
+.trajectory .chart g > path {
+  stroke: #ffffff38;
+  stroke-width: 1.5;
+}
+.trajectory .weightLine {
+  stroke: #fa2647;
+  stroke-width: 6;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.trajectory .chartFocus {
+  color: var(--paper);
+  border-top: 3px solid #d8d1c9;
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding-top: 12px;
+  font: 600 15px/1.4 var(--record-font);
+}
+.trajectory .chartFocus > b {
+  font:
+    700 24px/1 Atlas Numbers,
+    sans-serif;
+}
+.trajectory .chartFocus small {
+  color: #c1bbb2;
+  font-size: 13px;
+  margin-left: auto;
+}
+.content[data-section="weight_trend"] > .panel {
+  background: none;
+  clip-path: none;
+  margin-top: 12px;
+  padding: 0;
+  border: 0;
+}
+.content[data-section="weight_trend"] > .panel > h2 {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transform: rotate(-1deg);
+  margin: 0 0 15px;
+  padding: 7px 16px;
+  background: var(--paper);
+  color: #111;
+  width: max-content;
+  max-width: 100%;
+  font:
+    700 28px/1.2 Atlas Condensed,
+    sans-serif;
+  letter-spacing: 0.02em;
+}
+.content[data-section="weight_trend"] > .panel > h2 span {
+  font:
+    800 16px/1.2 Atlas Chinese,
+    var(--record-font);
+}
+.weightRow {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(160px, 1fr) minmax(
+      100px,
+      1fr
+    );
+  gap: 4px 18px;
+  align-items: center;
+  margin-block: 10px;
+  padding: 14px 22px !important;
+  background: var(--paper);
+  color: #111;
+  border: 0;
+  border-left: 7px solid var(--accent);
+  min-height: 0;
+}
+.weightRow > small {
+  font: 600 15px/1.5 var(--record-font);
+  color: #272727;
+}
+.weightRow > b {
+  font:
+    700 32px/1.2 Atlas Numbers,
+    sans-serif;
+  letter-spacing: 0.02em;
+}
+.weightRow > i {
+  font:
+    700 22px/1.2 Atlas Numbers,
+    sans-serif;
+  color: #272727;
+}
+.weightRow .details {
+  grid-column: 1/-1;
+  font-size: 14px;
+  color: #333;
+  margin-top: 3px;
+}
+.weightRow .details summary {
+  font-weight: 600;
+  font-size: 14px;
+  min-height: 30px;
+  padding: 6px 0;
+}
+.weightRow .details dl {
+  border-top: 2px solid #444;
+}
+.chips {
+  gap: 18px;
+  padding-block: 10px 16px;
+}
+.chips button {
+  padding: 16px 22px;
+  min-width: 185px;
+}
+.chips button b {
+  font: 700 17px var(--record-font);
+}
+.chips small {
+  font-size: 12px;
+  font-weight: 600;
+}
+.session {
+  font:
+    700 32px/1.3 Atlas Numbers,
+    var(--record-font);
+  letter-spacing: 0.02em;
+  padding: 6px 16px;
+}
+.trendControl {
+  font-size: 15px;
+}
+.panel > h2,
+.sect h2,
+.bodyRegion > summary > b,
+.foodDay h2 {
+  font-family:
+    Atlas Chinese,
+    var(--record-font);
+  font-weight: 800;
+  font-style: normal;
+}
+.bodyRegion {
+  border: 0;
+  border-left: 5px solid var(--accent);
+  padding: 0 0 16px 18px;
+  background: #111214;
+  margin-block: 22px;
+}
+.bodyRegion > summary {
+  background: var(--paper);
+  color: #111;
+  padding: 13px 18px;
+  font-size: 20px;
+  clip-path: polygon(0 0, 100% 0, 97% 100%, 0 100%);
+}
+.bodyRegion > summary > b {
+  font-size: 22px;
+}
+.bodyRegion > summary > span {
+  font: 600 14px var(--record-font);
+  color: #333;
+}
+.bodyRegion .metric {
+  background: none;
+  border-top: 3px solid #706d67;
+  padding: 18px 12px;
+}
+.metric > b {
+  font: 700 17px/1.5 var(--record-font);
+  color: var(--paper);
+}
+.metric > strong,
+.pair strong {
+  font:
+    700 32px/1.3 Atlas Numbers,
+    var(--record-font);
+  letter-spacing: 0.015em;
+}
+.pair > span {
+  font: 600 14px/1.6 var(--record-font);
+  color: #d2ccc3;
+}
+.plan,
+.lab,
+.daily,
+.foodDay {
+  border: 0;
+  border-top: 4px solid var(--paper);
+  padding-top: 0;
+  background: #101113;
+  box-shadow: none;
+  margin-block: 22px;
+}
+.plan > button,
+.labHead,
+.daily > button,
+.foodDay > button {
+  background: var(--paper);
+  color: #111;
+  border: 0;
+  padding: 17px 22px;
+  min-height: 80px;
+  border-radius: 0;
+  box-shadow: none;
+}
+.plan > button b,
+.foodDay > button > b {
+  font:
+    800 23px/1.5 Atlas Chinese,
+    var(--record-font);
+  letter-spacing: 0.025em;
+}
+.plan > button i,
+.foodDay > button > span {
+  font: 600 15px/1.5 var(--record-font);
+  color: #333;
+}
+.plan > button small,
+.labHead > strong {
+  font:
+    700 32px/1 Atlas Condensed,
+    sans-serif;
+  letter-spacing: 0.02em;
+  color: var(--accent);
+}
+.medicine {
+  padding: 20px 24px;
+  border: 0;
+  border-bottom: 3px solid #5c5852;
+  background: none;
+}
+.medicine > span > strong {
+  font: 700 23px/1.5 var(--record-font);
+}
+.medicine small {
+  font-size: 15px;
+  color: #d9d4cc;
+}
+.medicine > b {
+  font:
+    700 42px/1 Atlas Numbers,
+    sans-serif;
+  color: var(--accent);
+}
+.labHead span b {
+  font:
+    800 24px/1.3 Atlas Chinese,
+    var(--record-font);
+}
+.labHead small {
+  font: 600 14px/1.5 var(--record-font);
+  color: #444;
+}
+.analyte {
+  padding: 20px 24px;
+  border: 0;
+  border-bottom: 3px solid #68615c;
+  background: none;
+}
+.analyte span > b {
+  font: 700 18px/1.5 var(--record-font);
+}
+.analyte strong {
+  font:
+    700 34px/1.3 Atlas Numbers,
+    var(--record-font);
+  letter-spacing: 0.02em;
+}
+.analyte > small {
+  font: 600 14px/1.6 var(--record-font);
+  color: #d3ccc3;
+}
+.range {
+  height: 11px;
+  border-radius: 0;
+}
+.analyte i {
+  font-size: 14px;
+  font-weight: 700;
+}
+.daily > button > strong {
+  font:
+    700 66px/1 Atlas Numbers,
+    sans-serif;
+  color: var(--accent);
+}
+.daily > button b {
+  font:
+    800 22px/1.4 Atlas Chinese,
+    var(--record-font);
+}
+.daily > button i {
+  font: 600 15px/1.6 var(--record-font);
+  color: #333;
+}
+.daily small {
+  font:
+    700 14px/1.4 Atlas Condensed,
+    sans-serif;
+  color: #444;
+}
+.dailyBody {
+  padding: 18px 24px;
+}
+.facts {
+  gap: 0 24px;
+}
+.facts span {
+  background: none;
+  border: 0;
+  border-bottom: 3px solid #5c5852;
+  padding: 13px 0;
+}
+.facts small {
+  font: 600 14px/1.5 var(--record-font);
+  color: #ddd7ce;
+}
+.facts b {
+  font:
+    700 25px/1.4 Atlas Numbers,
+    var(--record-font);
+  letter-spacing: 0.02em;
+}
+.dailyBody h3 {
+  font:
+    800 20px Atlas Chinese,
+    var(--record-font);
+}
+.event {
+  border-width: 2px;
+  font-size: 15px;
+  line-height: 1.8;
+}
+.intake {
+  margin-left: 24px;
+  padding: 19px 22px 19px 12px;
+  border: 0;
+  border-bottom: 3px solid #706960;
+  background: none;
+}
+.intake > time {
+  font:
+    700 24px/1.4 Atlas Numbers,
+    var(--record-font);
+  color: #fff;
+}
+.intake > small {
+  font:
+    700 15px/1.4 Atlas Condensed,
+    sans-serif;
+  letter-spacing: 0.04em;
+}
+.intake > b {
+  font: 700 19px/1.6 var(--record-font);
+}
+.intake > strong {
+  font:
+    700 28px/1.3 Atlas Numbers,
+    sans-serif;
+  letter-spacing: 0.02em;
+}
+.details {
+  font: 500 14px/1.65 var(--record-font);
+}
+.details summary {
+  font-weight: 600;
+  min-height: 38px;
+}
+.details dl > div {
+  font: 500 14px/1.6 var(--record-font);
+}
+.details dd {
+  font-weight: 600;
+}
+/* Alpha and color treatment are baked into these versioned images, not filtered each frame. */
+.train-interior,
+.passengers-far,
+.passengers-mid,
+.passengers-near {
+  filter: none !important;
+  backface-visibility: hidden;
+  will-change: transform;
+  transform-style: flat;
+}
+.commute-bank {
+  contain: paint;
+  backface-visibility: hidden;
+  transform: translate3d(-110%, 0, 0);
+}
+.transit-destination strong {
+  font-family:
+    Atlas Condensed,
+    sans-serif;
+  font-weight: 700;
+  font-style: normal;
+  font-size: 25px;
+  letter-spacing: 0.03em;
+}
+.authArtwork > b {
+  display: none;
+}
+.authArtwork:after {
+  content: "";
+  display: block;
+  background: url("/art/atlas-04988e4d9db3/brand-7c320ba9ea.webp")
+    center/contain no-repeat;
+  width: 90%;
+  height: 160px;
+  margin-top: 70px;
+  transform: rotate(-5deg);
+}
+footer {
+  font-size: 12px;
+  color: #aaa49a;
+  margin-top: 30px;
+}
+@media (max-width: 1050px) and (min-width: 701px) {
+  .app {
+    padding-inline: 26px;
+  }
+  .tabs {
+    gap: 10px;
+  }
+  .navWord {
+    height: 40px;
+  }
+  .weightLayout {
+    gap: 20px;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  }
+  .weightHero > strong {
+    font-size: 100px;
+  }
+  .weightHero:before {
+    height: 130px;
+  }
+  .stats {
+    gap: 8px;
+  }
+  .stats b {
+    font-size: 24px;
+  }
+  .trajectory .sect > b {
+    font-size: 24px;
+  }
+  .toolbar > span {
+    font-size: 16px;
+  }
+}
+@media (max-width: 700px) {
+  .app {
+    padding: 0 20px 24px;
+  }
+  .top {
+    height: 86px;
+  }
+  .brandLogo {
+    width: 205px;
+    max-height: 64px;
+  }
+  .user {
+    font-size: 0;
+    gap: 0;
+  }
+  .user button {
+    width: 44px;
+  }
+  .tabs {
+    padding: 13px 20px 14px;
+    gap: 12px;
+    margin-inline: -20px;
+  }
+  .tabs button,
+  .tabs button.active {
+    min-height: 86px;
+    min-width: 116px;
+    max-width: 126px;
+  }
+  .navWord {
+    height: 40px;
+  }
+  .navLabel b {
+    font-size: 15px;
+  }
+  .toolbar {
+    gap: 10px;
+    min-height: 64px;
+    margin-bottom: 5px;
+  }
+  .toolbar > span {
+    display: none;
+  }
+  .toolbar label {
+    margin-left: 0;
+    flex: 1;
+    padding-left: 40px;
+    padding-right: 10px;
+    gap: 7px;
+  }
+  .toolbar input {
+    width: 100%;
+    min-width: 0;
+    font-size: 14px;
+  }
+  .toolbar > button {
+    min-width: 42px;
+    min-height: 44px;
+  }
+  .toolbar .searchTag {
+    font-size: 15px;
+    left: -7px;
+    top: 9px;
+  }
+  .sceneField {
+    inset: 0 -18px auto;
+    height: 540px;
+  }
+  .sceneField svg {
+    opacity: 0.6;
+  }
+  .hero,
+  .hero0,
+  .hero1,
+  .hero2,
+  .hero3,
+  .hero4,
+  .hero5 {
+    padding: 11px 0 18px 51px;
+    min-height: 122px;
+    margin-bottom: 8px;
+  }
+  .hero:before {
+    font-size: 52px;
+    top: 48px;
+  }
+  .hero h1 {
+    font-size: 28px;
+    letter-spacing: 0.035em;
+    margin-bottom: 8px;
+  }
+  .heroEyebrow {
+    gap: 8px;
+    margin-bottom: 10px;
+  }
+  .heroEyebrow span {
+    display: none;
+  }
+  .heroEyebrow > b {
+    font-size: 22px;
+  }
+  .hero p {
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.65;
+  }
+  .weightLayout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-bottom: 22px;
+  }
+  .weightHero {
+    padding: 8px 4px 4px;
+  }
+  .latestStamp {
+    font-size: 19px;
+    gap: 10px;
+  }
+  .latestStamp > span {
+    font-size: 13px;
+  }
+  .weightHero > strong {
+    font-size: 112px;
+    letter-spacing: 0.015em;
+    line-height: 1.28;
+    margin: 8px 0 16px;
+    padding-left: 8px;
+    gap: 12px;
+  }
+  .weightHero:before {
+    top: 42px;
+    height: 145px;
+    left: -10px;
+    right: -6px;
+  }
+  .weightHero > strong i {
+    font-size: 27px;
+  }
+  .stats {
+    gap: 10px;
+  }
+  .stats span {
+    font-size: 13px;
+  }
+  .stats b {
+    font-size: 28px;
+  }
+  .extras {
+    font-size: 13px;
+    border-top-width: 2px;
+    gap: 5px 14px;
+    margin-top: 9px;
+    padding-top: 9px;
+  }
+  .extras b {
+    font-size: 13px;
+  }
+  .trajectory {
+    padding: 16px 11px 16px 13px !important;
+    border-left-width: 3px;
+  }
+  .trajectory .sect > b {
+    font-size: 27px;
+  }
+  .trajectory .sect small {
+    font-size: 11px;
+  }
+  .trajectory .chart {
+    min-width: 320px;
+  }
+  .trajectory .chart text {
+    font-size: 24px;
+  }
+  .trajectory .chartFocus {
+    font-size: 13px;
+    gap: 10px;
+    flex-wrap: wrap;
+    border-top-width: 2px;
+  }
+  .trajectory .chartFocus > b {
+    font-size: 23px;
+  }
+  .trajectory .chartFocus small {
+    font-size: 12px;
+    margin-left: 0;
+  }
+  .content[data-section="weight_trend"] > .panel > h2 {
+    font-size: 23px;
+    gap: 12px;
+    padding: 8px 12px;
+    flex-wrap: wrap;
+    width: auto;
+  }
+  .content[data-section="weight_trend"] > .panel > h2 span {
+    font-size: 14px;
+  }
+  .weightRow {
+    grid-template-columns: minmax(105px, 1.2fr) minmax(70px, 1fr) minmax(
+        60px,
+        0.8fr
+      );
+    gap: 6px 9px;
+    padding: 13px 12px !important;
+    border-left-width: 5px;
+  }
+  .weightRow > small {
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .weightRow > b {
+    font-size: 27px;
+    white-space: nowrap;
+  }
+  .weightRow > i {
+    font-size: 20px;
+    white-space: nowrap;
+  }
+  .weightRow .details summary {
+    font-size: 13px;
+  }
+  .chips {
+    gap: 14px;
+  }
+  .chips button {
+    min-width: 154px;
+    padding: 14px 16px;
+  }
+  .chips button b {
+    font-size: 15px;
+  }
+  .session {
+    font-size: 29px;
+  }
+  .bodyRegion {
+    padding-left: 10px;
+    border-left-width: 4px;
+  }
+  .bodyRegion > summary {
+    padding: 13px 14px;
+  }
+  .bodyRegion > summary > b {
+    font-size: 20px;
+  }
+  .bodyRegion > summary > span {
+    font-size: 13px;
+  }
+  .bodyRegion .metric {
+    padding: 16px 10px;
+  }
+  .metric > b {
+    font-size: 16px;
+  }
+  .plan > button,
+  .labHead,
+  .daily > button,
+  .foodDay > button {
+    padding: 15px 14px;
+    min-height: 76px;
+  }
+  .plan > button b,
+  .foodDay > button > b {
+    font-size: 20px;
+  }
+  .plan > button i,
+  .foodDay > button > span {
+    font-size: 13px;
+  }
+  .plan > button small,
+  .labHead > strong {
+    font-size: 26px;
+  }
+  .medicine {
+    padding: 17px 14px;
+  }
+  .medicine > span > strong {
+    font-size: 20px;
+  }
+  .medicine small {
+    font-size: 14px;
+  }
+  .labHead span b {
+    font-size: 21px;
+  }
+  .analyte {
+    padding: 17px 14px;
+  }
+  .analyte span > b {
+    font-size: 17px;
+  }
+  .daily > button > strong {
+    font-size: 54px;
+  }
+  .daily > button b {
+    font-size: 20px;
+  }
+  .daily > button i {
+    font-size: 13px;
+  }
+  .dailyBody {
+    padding: 15px 14px;
+  }
+  .facts small {
+    font-size: 13px;
+  }
+  .facts b {
+    font-size: 23px;
+  }
+  .intake {
+    margin-left: 14px;
+    padding: 17px 13px 17px 8px;
+  }
+  .intake > b {
+    font-size: 17px;
+  }
+  .details dl > div {
+    font-size: 13px;
+  }
+  footer {
+    font-size: 10px;
+    line-height: 1.7;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sceneField,
+  .hero,
+  .weightHero,
+  .trajectory,
+  .content {
+    transform: none !important;
+  }
+  .sceneField {
+    will-change: auto;
+  }
+  .brand,
+  .tabs button {
+    transform: none !important;
+  }
+}
+/* Feather only two 56px edge strips. Masking the entire moving crowd forced costly group repainting. */
+.app {
+  overflow-x: clip;
+}
+.commute-bank {
+  background: none;
+  mask: none !important;
+  -webkit-mask: none !important;
+  clip-path: none;
+  contain: layout style;
+  overflow: visible;
+}
+.commute-stage {
+  position: absolute;
+  inset: 0 28px;
+  overflow: hidden;
+  background: #090b0b;
+  contain: paint;
+}
+.commute-bank:before,
+.commute-bank:after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 56px;
+  pointer-events: none;
+  z-index: 5;
+  background: linear-gradient(
+    90deg,
+    transparent 0,
+    #090b0b 28px,
+    transparent 56px
+  );
+  clip-path: polygon(
+    2% 0,
+    100% 0,
+    100% 100%,
+    3% 100%,
+    7% 93%,
+    0 86%,
+    5% 78%,
+    1% 69%,
+    8% 60%,
+    0 51%,
+    6% 43%,
+    1% 34%,
+    7% 25%,
+    0 16%,
+    6% 8%
+  );
+}
+.commute-bank:before {
+  left: 0;
+}
+.commute-bank:after {
+  right: 0;
+  transform: scaleX(-1);
+}
+.transit-destination {
+  z-index: 6;
+}
+.lab,
+.daily {
+  color: var(--paper);
+  clip-path: none;
+  padding: 0 18px 14px;
+}
+.lab .analyte,
+.lab .analyte.alert {
+  color: var(--paper);
+  border-bottom: 3px solid #625d56;
+}
+.lab .analyte > span > b,
+.lab .analyte > span > strong {
+  color: var(--paper);
+}
+.lab .analyte i {
+  border: 0;
+  color: #111;
+  background: #e9e4da;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 6px 10px;
+}
+.lab .analyte.alert i {
+  color: #9e102a;
+  background: #fff0f1;
+  border: 0;
+}
+.lab .analyte.alert:before {
+  background: #ef3653;
+}
+.lab .details,
+.daily .details {
+  color: #c9c3b9;
+}
+.lab .details dd,
+.daily .details dd {
+  color: #f5f2e9;
+}
+.lab .range {
+  background: #4b4743;
+  height: 11px;
+}
+.lab .range span {
+  background: #fff1d7;
+  width: 4px;
+}
+.daily .facts b {
+  font: 600 18px/1.65 var(--record-font);
+  color: var(--paper);
+}
+.daily .event {
+  color: var(--paper);
+  border-bottom: 2px solid #625d56;
+}
+.plan > button > small {
+  color: white;
+  font-size: 23px;
+  letter-spacing: 0.04em;
+}
+.intake.untimed {
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+.intake.untimed > time {
+  grid-column: 1/-1;
+  grid-row: auto;
+  font: 600 15px/1.6 var(--record-font);
+  color: #c9c3b9;
+  overflow-wrap: normal;
+}
+.intake.untimed > small,
+.intake.untimed > b {
+  grid-column: 1;
+  grid-row: auto;
+}
+.intake.untimed > strong {
+  grid-column: 2;
+  grid-row: 2/4;
+}
+.intake .details {
+  color: #c9c3b9;
+}
+@media (max-width: 700px) {
+  .lab,
+  .daily {
+    padding: 0 10px 12px;
+  }
+  .labHead {
+    gap: 14px;
+  }
+  .lab .analyte > span {
+    gap: 10px;
+  }
+  .lab .analyte > span > b {
+    font-size: 17px;
+    width: 100%;
+  }
+  .lab .analyte > span > strong {
+    font-size: 32px;
+  }
+  .lab .details,
+  .daily .details {
+    font-size: 13px;
+  }
+  .intake,
+  .intake.untimed {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    margin-inline: 8px;
+    padding: 18px 10px;
+  }
+  .intake > time,
+  .intake.untimed > time,
+  .intake > small,
+  .intake.untimed > small,
+  .intake > b,
+  .intake.untimed > b,
+  .intake > strong,
+  .intake.untimed > strong,
+  .intake .details {
+    grid-column: 1;
+    grid-row: auto;
+  }
+  .intake > time {
+    font-size: 24px;
+    overflow-wrap: normal;
+  }
+  .intake > small {
+    width: max-content;
+    max-width: 100%;
+    background: #2d2a2b;
+    padding: 4px 8px;
+    font-size: 14px;
+  }
+  .intake > b {
+    font-size: 17px;
+    line-height: 1.7;
+  }
+  .intake > strong {
+    font-size: 27px;
+    justify-self: start;
+  }
+  .daily .facts b {
+    font-size: 16px;
+  }
+}
+
+.trajectory .chart {
+  max-height: none;
+}
+/* Session contents share a composition rather than stretching every record across the screen. */
+@media (min-width: 1051px) {
+  .bodyRegion .metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 26px;
+  }
+  .bodyRegion .metric {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 8px 16px;
+    align-items: center;
+  }
+  .bodyRegion .metric .details {
+    grid-column: 1/-1;
+  }
+  .plan,
+  .lab {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 28px;
+  }
+  .plan > button,
+  .lab > .labHead {
+    grid-column: 1/-1;
+  }
+  .labHead > span {
+    display: flex;
+    flex: 1;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+  }
+  .lab .analyte {
+    min-width: 0;
+    padding: 20px 14px;
+  }
+}
+.hero h1 {
+  display: inline-block;
+  background: var(--paper);
+  color: #0a0a0a;
+  padding: 2px 12px 6px;
+  clip-path: polygon(1% 0, 100% 4%, 98% 100%, 0 97%);
+  letter-spacing: 0.045em;
+}
+.heroEyebrow > b {
+  background: none;
+  color: var(--accent) !important;
+  padding: 0 0 3px;
+  letter-spacing: 0.07em;
+  font-size: 24px;
+  transform: none;
+}
+@media (max-width: 700px) {
+  .hero h1 {
+    padding: 3px 9px 6px;
+    letter-spacing: 0.02em;
+  }
+  .heroEyebrow > b {
+    font-size: 23px;
+  }
+}
+.hero .heroEyebrow > b {
+  color: var(--accent) !important;
+}
+.daily > button > strong {
+  letter-spacing: 0.02em;
+  font-kerning: none;
+}
+/* Keep the graphic field clear of the chapter numeral and reading column. */
+.field2 svg {
+  transform: none;
+}

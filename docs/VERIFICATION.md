@@ -1,47 +1,41 @@
 # Verification — 2026-10-16
 
-## Completed before production release
+## Current release
 
-- Next.js production build: PASS (15.5.28), first-load JavaScript 207 kB (includes anime.js 4.5.0). XLSX is imported only when exporting.
-- Five record-adapter checks: valid date-only handling, invalid/null dates, no created_at fallback, distinct session identities / timestamps, lab unknown and abnormal flags, malformed row rejection.
-- Production-build Chromium: 390×844, 430×932, 1440×1000. All six pages, session selector, metric selector, expand/collapse, search, XLSX download, no document overflow, 48 rapid tab selections per viewport, last destination correct, no pageerror. PASS.
-- Production-build Playwright WebKit: same three widths and same navigation / interaction checks, using synthetic fixtures. PASS. Linux browser libraries were staged in /tmp; no system or project runtime dependencies were changed for this.
-- Reduced motion: immediate page selection, no commute overlay. PASS in both engines.
-- Request resilience: reversed refresh completion, token-refresh cache retention, signout with delayed response, slow network independent of animation duration, invalid non-array payload. PASS.
-- Actual 30fps reference transfer inspected frame by frame around 14.5–16.0 seconds in the referenced gameplay recording. Original application animation keyframes captured and inspected separately.
-- 390px rendering, 4× CPU slowdown: the new 2.6-second transition finished in the rendering-clock sample; 150 samples, median interval 16.7ms and p95 33.3ms in the final sample (an earlier concurrent-browser sample reached 66.6ms). This is a rendering-clock sample in a cloud browser, not a measured iPhone display frame rate.
+- Next.js 15.5.28 production build PASS. First-load JavaScript 201 kB; XLSX remains loaded only on export.
+- Record-adapter regression PASS. No data-layer/API/schema/authentication changes in this revision.
+- Chromium and Playwright WebKit: 390×844, 430×932 and 1440×1000; all six pages, body sessions/metric selection, expand/collapse, search, XLSX export, no document overflow, 48 rapid selections per viewport, last intended destination retained, zero pageerror. PASS with native WAAPI train and page motion. Reduced motion PASS in both engines.
+- Readability checks at 390 and 1920px using the private real-record snapshot: nonnegative numeric spacing and visible lab/daily/intake text contrast at least 4.5:1. PASS. Full-page screenshots inspected for all six pages at desktop and phone widths. Fixed inherited dark text on dark lab backgrounds and long non-clock time notes squeezing into narrow columns during review.
+- Disclosure stress: seven reversals 45ms apart, nested source details, animated unmount: PASS.
+- Resilience: reversed refresh responses, same-user token refresh cache retention, signout with delayed response, slow API independent of transit, invalid response shape: PASS.
+- Exact choreography screenshots at 450, 700, 1000, 1420, 1700, 2100, 2500, 2800 and 3200ms. Playwright drives JS timing and aligns native WAAPI clocks separately. Phone and 1920px screenshots inspected; the 1420ms swap remains fully covered.
+- Versioned asset cache: one-year immutable response headers, repeated asset transferSize 0 bytes in a context without request interception. For this managed proxy, use HRT_CACHE_SPKI to trust the public proxy certificate key; the blanket ignore-certificate-errors flag disables the intended Chromium HTTPS cache behavior.
 
-## Current motion / caching revision
+## Comparative performance
 
-- Commute timeline 2600ms, covered swap at 1420ms; actual-time DOM geometry confirms the bank extends beyond both screen edges at the swap. Irregular edge contour and alpha feather preserve opaque center coverage.
-- Final production build: Chromium and WebKit both PASS at all three dimensions, including reduced motion and 48 rapid selections per viewport.
-- Reversible disclosure stress: seven toggles at 45ms spacing, nested source disclosure, switch page during/after animation: PASS, zero page errors, no leftover fixed height.
-- Real browser cache check without Playwright routing: one-year immutable header; repeated versioned artwork transferSize 0 bytes. A separate shared decoded-image cache avoids recreating warm-up image objects for every transition.
-- Three local OFL font subsets total approximately 60 KiB. Existing original artwork is reused under versioned paths; no new scene generation in this revision.
-- Additional actual menu video studied around 69–72 seconds; see ART_DIRECTION.md for reference and implementation details.
+Production-build Chromium, CDP CPU throttling 4×. Approximately 3.2-second rAF sampling window; one warm-up before selection. These are cloud rendering-clock samples, not measured physical display frame rates.
+
+| Width | Before frames | After frames | Before p95 | After p95 | Before intervals >34ms | After intervals >34ms |
+| --- | ---: | ---: | ---: | ---: | ---: | ---: |
+| 390 | 176 | 188 | 33.4ms | 16.8ms | 2 | 2 |
+| 1920 | 70 | 136 | 116.7ms | 49.9ms | 25 | 7 |
+
+Median interval was approximately 16.7ms in all four samples. The final mobile sample had no observed long tasks; desktop had two (60ms and 55ms). A controlled full-mask ablation and an earlier optimized sample reached desktop p95 33.3–33.4ms; final native-motion sample was 49.9ms, so this release does not claim uninterrupted 60fps. The native compositor can continue transform animation while the main thread handles a view commit; rAF sampling alone does not measure those compositor frames.
+
+The alpha threshold and train color correction are baked into versioned WebPs; full-scene filtering/masking is replaced by two narrow edge strips. See MOTION_DIRECTION_V3.md for reference evidence, timings and asset provenance.
 
 ## Data and authentication boundaries
 
-Supabase was accessed read-only to inspect the existing view columns and an isolated snapshot. No schema, migrations, writes, policies or production authentication rules changed. Actual records were used only in private /tmp browser fixtures; committed tests contain synthetic records. A real user Google consent/login was not available in the cloud browser and is not claimed as tested. Cross-tab token-refresh and signout behavior used an isolated mock session.
+Real records are only private /tmp browser fixtures for visual review. Committed fixtures are synthetic. All UI tests intercept auth/data inside the isolated browser; application code ships no fixture mode or bypass. No Supabase schema, migration, writes, policy or production authentication changes. No medical imagery, predicted body shape, fabricated dates or inferred medication periods.
 
-## Known limitations
+## Known limits
 
-- No physical iPhone hardware test; mobile Chromium and WebKit viewports were tested.
-- Real Google first-time consent, production authenticated API responses and the user's live account session require a real user session; no test-only bypass is shipped.
-- Existing body/lab views do not expose batch IDs; grouping uses the actual sampling timestamp and honors IDs whenever future responses expose them. Separate sessions sharing an identical timestamp cannot be distinguished without source identifiers.
-- Missing medication dates remain undated records, not an asserted current plan. Explicitly planned/unconfirmed intakes are separated from actual intake counts.
-- No 60fps guarantee on physical devices; the 4× CPU p95 sample shows occasional 33–67ms intervals.
+- No physical iPhone or user's desktop test; Chromium and WebKit viewports were tested.
+- Real first-time Google consent and production authenticated API responses require the user's real session and are not claimed as tested.
+- Body/lab views without batch IDs retain the existing actual timestamp grouping; identical timestamps cannot resolve distinct source sessions without identifiers.
+- Missing medication dates remain undated. Planned/unconfirmed intake events remain excluded from actual meal/event counts.
+- Occasional slow frames remain in the cloud CPU-throttled measurements; no device-wide frame-rate guarantee.
 
-## Reproduce locally
+## Reproduce
 
-Build with a test-only Supabase public configuration, start the production server, then run:
-
-```
-NEXT_PUBLIC_SUPABASE_URL=https://test.supabase.co NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=test npm run build
-NEXT_PUBLIC_SUPABASE_URL=https://test.supabase.co NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY=test npm start
-npm test
-npm run test:browser
-npm run test:resilience
-```
-
-Browser scripts intercept auth and data only inside the isolated test browser. Application code has no fixture mode or login bypass. Set HRT_AUTH_STORAGE to the built Supabase project’s auth-storage key when not using the test project. Set TEST_URL to change the server and HRT_ENGINE=webkit to run the navigation suite in installed WebKit. HRT_TEST_RECORDS can point to a private, uncommitted record snapshot. Screenshots are private /tmp artifacts, not public assets.
+Build with a Supabase public configuration and start a production server. Set TEST_URL and, for a project other than the test project, HRT_AUTH_STORAGE to its public auth storage key. Run npm test, tests/browser.cjs, tests/resilience.cjs, tests/disclosure.cjs, tests/readability.cjs, tests/visual.cjs, tests/assets-cache.cjs and tests/motion-profile.cjs. HRT_ENGINE=webkit selects installed WebKit; HRT_TEST_RECORDS can reference an uncommitted private snapshot. Screenshots remain private /tmp artifacts.

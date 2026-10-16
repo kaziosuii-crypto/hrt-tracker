@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useRef } from "react";
-import { createScope, createTimeline } from "animejs";
+import { createScope, createTimeline, waapi } from "animejs";
 import { art } from "../lib/assets";
 export const COMMUTE_DURATION = 2600;
 export const COMMUTE_SWAP = 1420;
@@ -12,7 +12,7 @@ export default function Commute({ onCovered, onFinished, label }) {
     let covered = false,
       finished = false;
     const cover = () => {
-      if (!covered) {
+      if (!covered && !finished) {
         covered = true;
         callbacks.current.onCovered();
       }
@@ -32,49 +32,70 @@ export default function Commute({ onCovered, onFinished, label }) {
         finish();
         return;
       }
-      createTimeline({ onComplete: finish })
-        .add(
-          ".commute-bank",
-          { x: ["-110%", "0%"], duration: 780, ease: "out(3)" },
-          0,
-        )
-        .add(".commute-bank", { x: "110%", duration: 780, ease: "in(3)" }, 1820)
-        .add(
-          ".train-interior",
-          { x: ["-1%", "1%"], scale: 1.03, duration: 2600, ease: "linear" },
-          0,
-        )
-        .add(
-          ".passengers-far",
-          { x: ["-48%", "-52%"], duration: 2600, ease: "linear" },
-          0,
-        )
-        .add(
-          ".passengers-mid",
-          { x: ["-53%", "-47%"], duration: 2600, ease: "linear" },
-          0,
-        )
-        .add(
-          ".passengers-near",
-          { x: ["-180%", "-50%"], duration: 1000, ease: "inOut(2)" },
-          360,
-        )
-        .add(
-          ".passengers-near",
-          { x: "110%", duration: 920, ease: "inOut(2)" },
-          1480,
-        )
-        .add(
-          ".transit-destination",
-          { opacity: [0, 1], y: [7, 0], duration: 280, ease: "out(3)" },
-          850,
-        )
-        .add(
-          ".transit-destination",
-          { opacity: 0, duration: 220, ease: "in(2)" },
-          1700,
-        )
-        .call(cover, COMMUTE_SWAP);
+      const native = (selector, keyframes) => {
+        const node = root.current.querySelector(selector);
+        const animation = waapi.animate(node, {
+          transform: [keyframes[0].transform, keyframes.at(-1).transform],
+          duration: COMMUTE_DURATION,
+          ease: "linear",
+        });
+        // Anime.js owns lifecycle; explicit WAAPI offsets preserve the studied hold phases.
+        animation.animations[0].effect.setKeyframes(keyframes);
+        return animation;
+      };
+      const translate = (x) => `translate3d(${x}%,0,0)`;
+      const bank = native(".commute-bank", [
+        {
+          transform: translate(-110),
+          offset: 0,
+          easing: "cubic-bezier(.215,.61,.355,1)",
+        },
+        { transform: translate(0), offset: 780 / 2600 },
+        {
+          transform: translate(0),
+          offset: 1820 / 2600,
+          easing: "cubic-bezier(.55,.055,.675,.19)",
+        },
+        { transform: translate(110), offset: 1 },
+      ]);
+      bank.onComplete = () => {
+        cover();
+        finish();
+      };
+      native(".train-interior", [
+        { transform: "translate3d(-1%,0,0) scale(1.03)", offset: 0 },
+        { transform: "translate3d(1%,0,0) scale(1.03)", offset: 1 },
+      ]);
+      native(".passengers-far", [
+        { transform: translate(-48), offset: 0 },
+        { transform: translate(-52), offset: 1 },
+      ]);
+      native(".passengers-mid", [
+        { transform: translate(-53), offset: 0 },
+        { transform: translate(-47), offset: 1 },
+      ]);
+      native(".passengers-near", [
+        { transform: translate(-180), offset: 0 },
+        {
+          transform: translate(-180),
+          offset: 360 / 2600,
+          easing: "cubic-bezier(.455,.03,.515,.955)",
+        },
+        { transform: translate(-50), offset: 1360 / 2600 },
+        {
+          transform: translate(-50),
+          offset: 1480 / 2600,
+          easing: "cubic-bezier(.455,.03,.515,.955)",
+        },
+        { transform: translate(110), offset: 2400 / 2600 },
+        { transform: translate(110), offset: 1 },
+      ]);
+      waapi.animate(root.current.querySelector(".transit-destination"), {
+        opacity: [0, 0, 1, 1, 0, 0],
+        duration: 2600,
+        ease: "linear",
+      });
+      createTimeline().call(cover, COMMUTE_SWAP);
     });
     return () => {
       finished = true;
@@ -83,38 +104,31 @@ export default function Commute({ onCovered, onFinished, label }) {
   }, []);
   return (
     <div ref={root} className="commute" aria-hidden="true">
-      <svg width="0" height="0" style={{ position: "absolute" }}>
-        <defs>
-          <filter id="atlas-solid-ink" colorInterpolationFilters="sRGB">
-            <feComponentTransfer>
-              <feFuncA type="table" tableValues="0 0 0 1 1" />
-            </feComponentTransfer>
-          </filter>
-        </defs>
-      </svg>
       <div className="commute-bank">
-        <picture>
-          <source
-            media="(max-width:700px)"
-            srcSet={art("carriage-mobile.webp")}
+        <div className="commute-stage">
+          <picture>
+            <source
+              media="(max-width:700px)"
+              srcSet={art("carriage-mobile.webp")}
+            />
+            <img className="train-interior" src={art("carriage.webp")} alt="" />
+          </picture>
+          <img
+            className="passengers-far"
+            src={art("passengers-far.webp")}
+            alt=""
           />
-          <img className="train-interior" src={art("carriage.webp")} alt="" />
-        </picture>
-        <img
-          className="passengers-far"
-          src={art("passengers-far.webp")}
-          alt=""
-        />
-        <img
-          className="passengers-mid"
-          src={art("passengers-mid.webp")}
-          alt=""
-        />
-        <img
-          className="passengers-near"
-          src={art("passengers-near.webp")}
-          alt=""
-        />
+          <img
+            className="passengers-mid"
+            src={art("passengers-mid.webp")}
+            alt=""
+          />
+          <img
+            className="passengers-near"
+            src={art("passengers-near.webp")}
+            alt=""
+          />
+        </div>
         <div className="transit-destination">
           <small>ATLAS / TRANSFER</small>
           <strong>{label}</strong>

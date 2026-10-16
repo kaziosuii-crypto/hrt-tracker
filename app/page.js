@@ -25,11 +25,11 @@ import {
 import { supabase } from "../lib/supabase";
 import Commute from "./Commute";
 import {
-  NavButton,
-  useHeadlineMotion,
-  useStageMotion,
-  MotionDetails,
-} from "./Motion";
+  useSceneDirection,
+  useTerminalDirection,
+  SceneField,
+} from "./Direction";
+import { NavButton, MotionDetails } from "./Motion";
 import { warmArt } from "../lib/art-cache";
 import {
   recordedAt,
@@ -146,7 +146,7 @@ function Details({ r }) {
 }
 function Head({ i, title, desc }) {
   const ref = useRef(null);
-  useHeadlineMotion(ref);
+
   const t = tabs[i];
   return (
     <header
@@ -223,7 +223,9 @@ function WeightPage({ rows }) {
       />
       <div className="weightLayout">
         <section className="weightHero">
-          <small>LATEST / {date(dt(last))}</small>
+          <small className="latestStamp">
+            LATEST <span>/ {date(dt(last))}</span>
+          </small>
           <strong>
             {last.weight_kg}
             <i>kg</i>
@@ -255,7 +257,9 @@ function WeightPage({ rows }) {
         </section>
         <section className="panel trajectory">
           <div className="sect">
-            <b>01 / TRAJECTORY</b>
+            <b>
+              TRAJECTORY <i>/ KG</i>
+            </b>
             <small>{a.length} 次真实测量</small>
           </div>
           <div className="chartScroll">
@@ -266,13 +270,17 @@ function WeightPage({ rows }) {
               role="img"
               aria-label="体重趋势，横坐标为实际日期，纵坐标为公斤"
             >
-              {[0, 1, 2, 3, 4].map((i) => {
-                let y = 40 + i * 50;
+              {[0, 1, 2].map((i) => {
+                let y = 40 + i * 100;
                 return (
                   <g key={i}>
-                    <path d={"M56 " + y + "H716"} stroke="#ffffff18" />
-                    <text x="8" y={y + 4} fill="#aaa" fontSize="11">
-                      {(hi - (i * (hi - lo)) / 4).toFixed(1)}
+                    <path
+                      d={"M56 " + y + "H716"}
+                      stroke="#ffffff38"
+                      strokeWidth="1.5"
+                    />
+                    <text x="8" y={y + 4} fill="#f3eee4" fontSize="17">
+                      {(hi - (i * (hi - lo)) / 2).toFixed(1)}
                     </text>
                   </g>
                 );
@@ -282,7 +290,7 @@ function WeightPage({ rows }) {
                 d={path}
                 fill="none"
                 stroke="#f0474e"
-                strokeWidth="3"
+                strokeWidth="6"
               />
               {pts.map((p, i) => (
                 <g
@@ -299,15 +307,21 @@ function WeightPage({ rows }) {
                   <circle
                     cx={p[0]}
                     cy={p[1]}
-                    r={active === a[i] ? 6 : 3}
+                    r={active === a[i] ? 8 : 5}
                     fill={active === a[i] ? "#fff" : "#ed2634"}
                   />
                 </g>
               ))}
-              <text x="56" y="270" fill="#aaa" fontSize="11">
+              <text x="56" y="270" fill="#f3eee4" fontSize="17">
                 {day(dt(start))}
               </text>
-              <text x="716" y="270" textAnchor="end" fill="#aaa" fontSize="11">
+              <text
+                x="716"
+                y="270"
+                textAnchor="end"
+                fill="#f3eee4"
+                fontSize="17"
+              >
                 {day(dt(last))}
               </text>
             </svg>
@@ -320,7 +334,9 @@ function WeightPage({ rows }) {
         </section>
       </div>
       <section className="panel">
-        <h2>Measurement archive</h2>
+        <h2>
+          MEASUREMENT ARCHIVE <span>测量记录</span>
+        </h2>
         {a
           .slice()
           .reverse()
@@ -701,7 +717,15 @@ function FoodPage({ rows }) {
             </button>
             {(open === k || (open === null && i === 0)) &&
               x.map((r, j) => (
-                <article className="intake" key={r.id || j}>
+                <article
+                  className={
+                    "intake " +
+                    (/^\d{1,2}:\d{2}/.test(r.time_text || "")
+                      ? "timed"
+                      : "untimed")
+                  }
+                  key={r.id || j}
+                >
                   <time>{r.time_text || "时间未记录"}</time>
                   <small>
                     {isPendingIntake(r)
@@ -871,7 +895,9 @@ function Content({ id, data, rows, foods, retry }) {
   }
 }
 export default function Home() {
-  const stage = useRef(null);
+  const stage = useRef(null),
+    terminal = useRef(null);
+
   const [user, U] = useState(null),
     [token, T] = useState(null),
     [ready, R] = useState(false),
@@ -1008,7 +1034,8 @@ export default function Home() {
       active = false;
     };
   }, []);
-  useStageMotion(stage, id, !!data[id]?.loaded);
+  useTerminalDirection(terminal, !!user);
+  useSceneDirection(stage, id, !!data[id]?.loaded);
   const choose = (v) => {
     load(v, token);
     if (animating.current) {
@@ -1025,6 +1052,7 @@ export default function Home() {
       Q("");
       return;
     }
+    window.dispatchEvent(new Event("atlas:depart"));
     dest.current = v;
     swapped.current = false;
     animating.current = true;
@@ -1121,13 +1149,16 @@ export default function Home() {
     }
   };
   return (
-    <main className="app">
+    <main ref={terminal} className="app">
       <header className="top">
         <div className="brand">
-          <b>A</b>
-          <span>
-            HRT ATLAS<small>PRIVATE DATA TERMINAL</small>
-          </span>
+          <img
+            className="brandLogo"
+            src="/art/atlas-04988e4d9db3/brand-7c320ba9ea.webp"
+            alt="HRT Atlas"
+            width="275"
+            height="78"
+          />
         </div>
         <span className="user">
           {user.email || "已登录"}{" "}
@@ -1157,7 +1188,7 @@ export default function Home() {
           >
             <img
               className="navWord"
-              src={"/art/atlas-09ce5461945a/title-" + index + ".webp"}
+              src={"/art/atlas-04988e4d9db3/title-" + index + ".webp"}
               alt=""
             />
             <span className="navLabel">
@@ -1172,7 +1203,8 @@ export default function Home() {
           ARCHIVE <i>/</i> {t[2]}
         </span>
         <label>
-          <Search size={15} />
+          <span className="searchTag">FIND</span>
+          <Search size={19} />
           <input
             value={query}
             onChange={(e) => Q(e.target.value)}
@@ -1193,6 +1225,7 @@ export default function Home() {
         </p>
       )}
       <section ref={stage} className="content" key={id} data-section={id}>
+        <SceneField section={id} />
         <DataBoundary key={id} retry={retry}>
           <Content
             id={id}

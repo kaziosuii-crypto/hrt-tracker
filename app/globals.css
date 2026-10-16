@@ -856,7 +856,7 @@ footer {
   padding: 45px;
   isolation: isolate;
   overflow: hidden;
-  background: #555 url("/art/atlas-09ce5461945a/carriage.webp") center/cover;
+  background: #555 url("/art/atlas-04988e4d9db3/carriage.webp") center/cover;
 }
 .authArtwork:before {
   content: "";
@@ -872,7 +872,7 @@ footer {
   right: -15%;
   width: 90%;
   height: 90%;
-  background: url("/art/atlas-09ce5461945a/passengers-mid.webp") center
+  background: url("/art/atlas-04988e4d9db3/passengers-mid.webp") center
     bottom/contain no-repeat;
   z-index: -1;
 }
@@ -1401,10 +1401,10 @@ footer {
   color: #ddd;
 }
 .authArtwork {
-  background-image: url("/art/atlas-09ce5461945a/carriage.webp");
+  background-image: url("/art/atlas-04988e4d9db3/carriage.webp");
 }
 .authArtwork:after {
-  background-image: url("/art/atlas-09ce5461945a/passengers-mid.webp");
+  background-image: url("/art/atlas-04988e4d9db3/passengers-mid.webp");
   height: 65%;
   width: 170%;
   right: -55%;
@@ -1575,7 +1575,7 @@ footer {
 }
 @media (max-width: 700px) {
   .authArtwork {
-    background-image: url("/art/atlas-09ce5461945a/carriage-mobile.webp");
+    background-image: url("/art/atlas-04988e4d9db3/carriage-mobile.webp");
   }
 }
 /* Wordmarks are interactive navigation labels; page headings stay typographic. */

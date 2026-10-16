@@ -15,24 +15,42 @@ const assert = require("node:assert/strict");
     page: p,
     context,
     errors,
-  } = await setup(browser, 390, 844, "no-preference", true);
+  } = await setup(
+    browser,
+    Number(process.env.HRT_VISUAL_WIDTH) || 390,
+    process.env.HRT_VISUAL_WIDTH ? 1080 : 844,
+    "no-preference",
+    true,
+  );
   await p.locator(".weightHero").waitFor();
-  await p.waitForTimeout(400);
+  await p.waitForTimeout(1900);
   await p.screenshot({
     path: "/tmp/hrt-review/final-weight.png",
     fullPage: true,
   });
-  await p.clock.pauseAt(new Date());
+  await p.clock.pauseAt(new Date(await p.evaluate(() => Date.now() + 100)));
   await p
     .locator(".tabs button")
     .nth(1)
     .evaluate((el) => el.click());
   let previous = 0;
-  for (const ms of [450, 700, 1000, 1420, 1700, 2100, 2500]) {
+  for (const ms of [450, 700, 1000, 1420, 1700, 2100, 2500, 2800, 3200]) {
     await p.clock.runFor(ms - previous);
     previous = ms;
+    // Playwright's clock drives JS timelines; align native WAAPI animations separately.
+    await p.evaluate(() => {
+      for (const a of document.getAnimations())
+        if (a.__atlasCreatedAt != null) {
+          const elapsed = Math.max(0, performance.now() - a.__atlasCreatedAt);
+          if (elapsed >= a.effect.getComputedTiming().endTime) a.finish();
+          else {
+            a.pause();
+            a.currentTime = elapsed;
+          }
+        }
+    });
     await p.screenshot({
-      path: `/tmp/hrt-review/transit-${process.env.HRT_ENGINE || "chromium"}-${ms}.png`,
+      path: `/tmp/hrt-review/transit-${process.env.HRT_VISUAL_WIDTH || 390}-${process.env.HRT_ENGINE || "chromium"}-${ms}.png`,
     });
   }
   await p.clock.runFor(600);

@@ -46,7 +46,17 @@ async function setup(
     await r.fulfill({ json: records[view] || [] });
   });
   const page = await context.newPage();
-  if (clock) await page.clock.install();
+  if (clock) {
+    await page.clock.install();
+    await page.addInitScript(() => {
+      const original = Element.prototype.animate;
+      Element.prototype.animate = function (...args) {
+        const animation = original.apply(this, args);
+        animation.__atlasCreatedAt = performance.now();
+        return animation;
+      };
+    });
+  }
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   await page.goto(base);
@@ -75,7 +85,7 @@ async function main() {
     const names = ["体重", "身体", "HRT", "化验", "每日", "饮食"];
     for (let i = 0; i < 6; i++) {
       await p.locator(".tabs button").nth(i).click();
-      await p.waitForTimeout(2850);
+      await p.waitForTimeout(3450);
       await p.screenshot({
         path: `/tmp/hrt-review/${width}-${i}.png`,
         fullPage: true,

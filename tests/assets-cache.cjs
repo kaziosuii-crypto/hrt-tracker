@@ -4,13 +4,24 @@ const assert = require("node:assert/strict");
 (async () => {
   const browser = await chromium.launch({
     executablePath: "/usr/bin/chromium",
-    args: ["--no-sandbox", "--ignore-certificate-errors"],
+    args: [
+      "--no-sandbox",
+      ...(process.env.HRT_CACHE_SPKI
+        ? [
+            "--ignore-certificate-errors-spki-list=" +
+              process.env.HRT_CACHE_SPKI,
+          ]
+        : []),
+    ],
   });
-  const context = await browser.newContext({ ignoreHTTPSErrors: true });
+  const context = await browser.newContext({ ignoreHTTPSErrors: false });
   const page = await context.newPage();
   await page.goto(process.env.TEST_URL || "http://localhost:3011");
   const result = await page.evaluate(async () => {
-    const url = "/art/atlas-09ce5461945a/passengers-near.webp";
+    const preload = document.querySelector(
+      'link[as="image"][href*="/art/atlas-"]',
+    );
+    const url = new URL("passengers-near.webp", preload.href).pathname;
     const first = await fetch(url);
     await first.arrayBuffer();
     const policy = first.headers.get("cache-control");

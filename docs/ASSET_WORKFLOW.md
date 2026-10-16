@@ -24,3 +24,7 @@ All are original generated assets, compressed/cropped with Sharp, not copied gam
 The title generation predates the user's added universal-reference requirement. The final standing crowd was regenerated with real reference frames and a 5093-character specification. Every generation after that requirement includes references. No further unreferenced generations are authorized by this workflow.
 
 Research images were used for reference only and are not in public/ or the repository. Raw rejected generations remain in the Work Library, outside the website bundle. No real health-data fixtures or authenticated browser state are committed.
+
+## Current derivative set
+
+Active assets now use /art/atlas-04988e4d9db3/. The accepted original crowds have offline alpha treatment and the carriage has offline color treatment (scripts/bake-transit.cjs), replacing live filters. A new referenced, transparent HRT ATLAS brand is used in header/login. Its 4,139-character prompt is in prompts/atlas-brand-v2.txt; original generation is preserved in Work storage. Chinese headings and numbers use new OFL font subsets with licenses in public/fonts. No new background scene or borrowed game art was introduced.
