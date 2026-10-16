@@ -1,0 +1,2 @@
+base=eba3b34e188872333719f0a2388a87545375c0bc
+storage=external-url-only
