@@ -3,6 +3,7 @@ import "./direction.css";
 import { CAMERA_IMAGE } from "../lib/camera-assets";
 import { rig } from "../lib/rig-assets";
 import { figure } from "../lib/figure-assets";
+import MealPhotoEnhancer from "./MealPhotoEnhancer";
 export const metadata = {
   title: "HRT Atlas",
   description: "Private longitudinal HRT dashboard",
@@ -43,7 +44,10 @@ export default function RootLayout({ children }) {
         <link rel="preload" as="image" href={CAMERA_IMAGE} />
         <link rel="preload" as="image" href={figure("pattern-v1")} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <MealPhotoEnhancer />
+      </body>
     </html>
   );
 }
