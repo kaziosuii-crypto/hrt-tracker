@@ -14,3 +14,7 @@ Enable Google under Authentication → Providers. Add your production Vercel URL
 ## Data
 The server endpoint only permits these private `hrt` views:
 `v_measurement_timeline`, `v_weight_trend`, `v_breast_body_measurements`, `v_medication_history`, `v_lab_history`, `v_daily_overview`, `v_food_history`.
+
+## UI / motion implementation
+
+The commute transition uses original layered train-interior assets; wordmarks are frameless interactive navigation controls. See `docs/ART_DIRECTION.md`, `docs/ASSET_WORKFLOW.md` and `docs/VERIFICATION.md` for reference research, generation specifications, test evidence and current limitations. `DATA_CONTRACT.md` remains authoritative. No Supabase schema or production authentication bypass is introduced.

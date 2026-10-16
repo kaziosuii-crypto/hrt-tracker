@@ -1,1 +1,24 @@
-{"name":"hrt-dashboard","version":"1.0.0","private":true,"scripts":{"dev":"next dev","build":"next build","start":"next start"},"dependencies":{"@supabase/supabase-js":"^2.76.1","lucide-react":"^0.468.0","next":"^15.5.6","react":"^19.1.0","react-dom":"^19.1.0","xlsx":"^0.18.5"}}
+{
+  "name": "hrt-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "test": "node --test tests/records.test.mjs",
+    "test:browser": "node tests/browser.cjs",
+    "test:resilience": "node tests/resilience.cjs"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "2.118.0",
+    "lucide-react": "0.468.0",
+    "next": "15.5.28",
+    "react": "19.3.1",
+    "react-dom": "19.3.1",
+    "xlsx": "0.18.5"
+  },
+  "devDependencies": {
+    "@playwright/test": "1.64.1"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "weight_trend": [
+    {
+      "measured_date": "2026-01-01",
+      "weight_kg": 80,
+      "source": "synthetic test fixture"
+    },
+    {
+      "measured_date": "2026-02-01",
+      "weight_kg": 79
+    }
+  ],
+  "breast_body_measurements": [
+    {
+      "measured_at": "2026-01-01T12:00:00Z",
+      "category": "测试区域",
+      "metric": "测试指标",
+      "side": "L",
+      "adopted_value": "30",
+      "unit": "cm"
+    },
+    {
+      "measured_at": "2026-01-01T12:00:00Z",
+      "category": "测试区域",
+      "metric": "测试指标",
+      "side": "R",
+      "adopted_value": "30",
+      "unit": "cm"
+    },
+    {
+      "measured_at": "2026-01-08T12:00:00Z",
+      "category": "测试区域",
+      "metric": "测试指标",
+      "side": "L",
+      "adopted_value": "31",
+      "unit": "cm"
+    },
+    {
+      "measured_at": "2026-01-08T12:00:00Z",
+      "category": "测试区域",
+      "metric": "测试指标",
+      "side": "R",
+      "adopted_value": "31",
+      "unit": "cm"
+    }
+  ],
+  "medication_history": [
+    {
+      "medication": "测试药物（非医疗建议）",
+      "start_date": null,
+      "formulation": "仅测试",
+      "prescribed_dose_frequency": "未记录"
+    }
+  ],
+  "lab_history": [
+    {
+      "measured_at": "2026-01-01T12:00:00Z",
+      "test_name": "测试检验项",
+      "result_numeric": 5,
+      "reference_low": 1,
+      "reference_high": 4
+    }
+  ],
+  "daily_overview": [
+    {
+      "record_date": "2026-01-01",
+      "sleep_hours": 7,
+      "steps": 1000
+    }
+  ],
+  "food_history": [
+    {
+      "record_date": "2026-01-01",
+      "time_text": "12:00",
+      "meal_type": "午餐",
+      "food": "测试餐食",
+      "estimated_kcal": 500
+    },
+    {
+      "record_date": "2026-01-01",
+      "time_text": "时间未记录",
+      "meal_type": "饮料",
+      "food": "测试饮料",
+      "estimated_kcal": 0
+    },
+    {
+      "record_date": "2026-01-02",
+      "time_text": "计划午餐（尚未食用）",
+      "meal_type": "午餐",
+      "food": "计划测试餐食",
+      "estimated_kcal": 500
+    }
+  ]
+}
