@@ -76,7 +76,9 @@ export default function MealPhotoEnhancer() {
             gallery.setAttribute("aria-label", "餐前餐后照片");
             if (before) gallery.append(buildPhoto("餐前", before, row.food));
             if (after) gallery.append(buildPhoto("餐后", after, row.food));
-            card.querySelector(".details")?.before(gallery) || card.append(gallery);
+            const details = card.querySelector(".details");
+            if (details) details.before(gallery);
+            else card.append(gallery);
           });
         });
       });
