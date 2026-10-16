@@ -1,5 +1,7 @@
 # Access scene and articulated actor — 2026-10-16
 
+The access/static-menu rig remains in use. Its transition implementation is superseded by CAMERA_MOTION.md: the foreground is now a complete coherently drawn perspective pose.
+
 This focused follow-up replaces the blank login artwork and the ambiguous enlarged-hand/whole-pose crossfade. It keeps the established six-menu data layouts and grain contract.
 
 ## Original asset iteration

@@ -2147,3 +2147,12 @@ footer {
 .scenePortrait .puppetActor {
   opacity: 1;
 }
+/* Full perspective pose: one uniformly transformed bitmap, not independently enlarged limbs. */
+.actorLens {
+  position: absolute;
+  left: 0;
+  top: 0;
+  max-width: none;
+  transform-origin: 0 0;
+  will-change: transform;
+}

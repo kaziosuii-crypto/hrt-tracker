@@ -1,5 +1,13 @@
 # Verification — 2026-10-16
 
+## Current coherent-camera transition
+
+See CAMERA_MOTION.md. Production build203kB first-load JavaScript; record regression PASS. The foreground is a newly drawn complete reaching pose, uniformly transformed as one image. New foreground WebP230,724 bytes. Transition2100ms, covered view commit760ms. Chromium390/1920 and WebKit390 exact keyframes PASS: source cover regions are entirely opaque, the whole character scales uniformly, all viewport edges are covered at720/800ms, old/new view boundary confirmed, zero client exceptions. Existing approved login/static menu and data layouts are unchanged.
+
+Full current Chromium/WebKit suites PASS at390×844,430×932,1440×1000: all six menus, sessions, expansion, search/export,48 rapid selections per viewport and reduced motion; zero client exceptions.
+
+Latest profile,4×CPU/3.2s:390px186 rAF samples,p9516.8ms,two intervals>34ms;1920px175 samples,p9533.3ms,three intervals>34ms. Long tasks69/60ms on phone and55/60ms desktop. These are cloud browser-clock measurements, not physical-device frame-rate guarantees. Covered-swap/inert/unmount test and slow-network/stale-response/session-refresh resilience PASS. Seven critical versioned images pass immutable policy and zero-byte repeat transfers.
+
 ## Current access / puppet follow-up
 
 See ARTICULATED_ACTOR.md. Blank login placeholder is replaced with the original assembled character, proper brand placement and access composition. Four generated, iterated joint sprites total200,700 bytes. The transition uses a hierarchical shoulder/elbow/head rig rather than overlapping whole-pose images. Static portrait is hidden during the moving pose; the phone crop resolves before handoff completion. Production build PASS, first-load JavaScript203kB. Record regression PASS. Access scene tests in Chromium/WebKit at390/1440 PASS: all four image responses200, no document overflow, logo does not obscure the face, Google OAuth provider/redirect request unchanged. No real Google consent performed.

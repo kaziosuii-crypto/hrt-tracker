@@ -16,7 +16,7 @@ const assert = require("node:assert/strict");
     "weight_trend",
   );
   assert.equal(await p.locator(".content").evaluate((e) => e.inert), true);
-  await p.waitForTimeout(450);
+  await p.waitForTimeout(710);
   assert.equal(
     await p.locator(".content").getAttribute("data-section"),
     "breast_body_measurements",

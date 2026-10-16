@@ -3,10 +3,17 @@ import { useLayoutEffect, useRef } from "react";
 import { createScope, createTimeline, waapi } from "animejs";
 import PuppetActor from "./PuppetActor";
 import { ArchivePattern } from "./StageArt";
-export const MENU_DURATION = 1800;
-export const MENU_SWAP = 460;
+import {
+  CAMERA_IMAGE,
+  CAMERA_SIZE,
+  PALM_RECT,
+  CAMERA_COVER,
+} from "../lib/camera-assets";
+export const MENU_DURATION = 2100;
+export const MENU_SWAP = 760;
 
-// Studied reference: forearm -> shoulder/turn -> left information -> right portrait -> paper tail.
+// A complete, coherent perspective drawing moves towards the lens as one object.
+// The hand never scales independently of its shoulder/chest/head.
 export default function MenuChange({ onCovered, onFinished }) {
   const root = useRef(null),
     callbacks = useRef({ onCovered, onFinished });
@@ -31,23 +38,18 @@ export default function MenuChange({ onCovered, onFinished }) {
     const portrait = document.querySelector(".scenePortrait");
     if (portrait) {
       const field = portrait.offsetParent,
-        stage = document.querySelector(".content"),
-        sr = stage.getBoundingClientRect();
-      const r = {
-        left: sr.left + field.offsetLeft + portrait.offsetLeft,
-        top: sr.top + field.offsetTop + portrait.offsetTop,
-        width: portrait.offsetWidth,
-        height: portrait.offsetHeight,
-      };
-      for (const name of [".actorPuppet"]) {
-        const el = root.current.querySelector(name);
-        Object.assign(el.style, {
-          left: r.left + "px",
-          top: r.top + "px",
-          width: r.width + "px",
-          height: r.height + "px",
-        });
-      }
+        sr = document.querySelector(".content").getBoundingClientRect();
+      Object.assign(root.current.querySelector(".actorPuppet").style, {
+        left: sr.left + field.offsetLeft + portrait.offsetLeft + "px",
+        top: sr.top + field.offsetTop + portrait.offsetTop + "px",
+        width: portrait.offsetWidth + "px",
+        height: portrait.offsetHeight + "px",
+        ...(innerWidth <= 700
+          ? {
+              clipPath: `inset(0 0 ${Math.max(0, portrait.offsetHeight - 175)}px 0)`,
+            }
+          : {}),
+      });
     }
     const scope = createScope({ root }).add(() => {
       if (matchMedia("(prefers-reduced-motion: reduce)").matches) {
@@ -55,8 +57,7 @@ export default function MenuChange({ onCovered, onFinished }) {
         return;
       }
       const native = (selector, property, frames, done) => {
-        const node = root.current.querySelector(selector);
-        const a = waapi.animate(node, {
+        const a = waapi.animate(root.current.querySelector(selector), {
           [property]: [frames[0][property], frames.at(-1)[property]],
           duration: MENU_DURATION,
           ease: "linear",
@@ -65,6 +66,52 @@ export default function MenuChange({ onCovered, onFinished }) {
         a.animations[0].effect.setKeyframes(frames);
         return a;
       };
+      const t = (ms) => ms / MENU_DURATION,
+        phone = innerWidth <= 700;
+      const base = Math.min(
+        (innerHeight * 0.82) / CAMERA_SIZE.height,
+        (innerWidth * (phone ? 1.15 : 0.72)) / CAMERA_SIZE.width,
+      );
+      const cx = PALM_RECT.x + PALM_RECT.width / 2;
+      const bx = innerWidth * (phone ? 0.18 : 0.59) - cx * base,
+        by = phone
+          ? innerHeight * 0.12
+          : (innerHeight - CAMERA_SIZE.height * base) / 2;
+      // This source rectangle is fully opaque in the actual adopted WebP.
+      // Uniform zoom maps it beyond all four viewport edges; the page swaps inside that interval.
+      const coveredRect = phone ? CAMERA_COVER.phone : CAMERA_COVER.desktop;
+      const zoom =
+        Math.max(
+          innerWidth / coveredRect.width,
+          innerHeight / coveredRect.height,
+        ) * 1.06;
+      const coverX = coveredRect.x + coveredRect.width / 2;
+      const coverY = coveredRect.y + coveredRect.height / 2;
+      const full = `translate3d(${innerWidth / 2 - coverX * zoom}px,${innerHeight / 2 - coverY * zoom}px,0) scale(${zoom}) rotate(0deg)`;
+      const fit = `translate3d(${bx}px,${by}px,0) scale(${base}) rotate(0deg)`;
+      native(".actorLens", "transform", [
+        {
+          transform: `translate3d(${innerWidth * 1.05}px,${by + 60}px,0) scale(${base * 0.96}) rotate(-7deg)`,
+          offset: 0,
+          easing: "cubic-bezier(.18,.8,.2,1)",
+        },
+        { transform: fit, offset: t(260) },
+        { transform: fit, offset: t(360), easing: "cubic-bezier(.62,0,.2,1)" },
+        { transform: full, offset: t(690) },
+        {
+          transform: full,
+          offset: t(850),
+          easing: "cubic-bezier(.45,0,.35,1)",
+        },
+        {
+          transform: `translate3d(${innerWidth + 60}px,${-innerHeight * 0.18}px,0) scale(${zoom * 0.72}) rotate(0deg)`,
+          offset: t(1370),
+        },
+        {
+          transform: `translate3d(${innerWidth + 60}px,${-innerHeight * 0.18}px,0) scale(${zoom * 0.72}) rotate(0deg)`,
+          offset: 1,
+        },
+      ]);
       native(
         ".actorPattern",
         "transform",
@@ -76,16 +123,16 @@ export default function MenuChange({ onCovered, onFinished }) {
           },
           {
             transform: "translate3d(0,0,0) rotate(0deg) scale(1.05)",
-            offset: 340 / MENU_DURATION,
+            offset: t(340),
           },
           {
             transform: "translate3d(0,0,0) rotate(0deg) scale(1.05)",
-            offset: 530 / MENU_DURATION,
+            offset: t(900),
             easing: "cubic-bezier(.2,.7,.2,1)",
           },
           {
             transform: "translate3d(105vw,-8vh,0) rotate(8deg) scale(1)",
-            offset: 1120 / MENU_DURATION,
+            offset: t(1420),
           },
           {
             transform: "translate3d(105vw,-8vh,0) rotate(8deg) scale(1)",
@@ -94,109 +141,35 @@ export default function MenuChange({ onCovered, onFinished }) {
         ],
         finish,
       );
-      const actor = root.current.querySelector(".actorPuppet");
-      const box = actor.getBoundingClientRect();
-      const phone = innerWidth <= 700;
-      const scale = Math.min(
-        phone ? 1.38 : 1.12,
-        (innerHeight * 0.82) / box.height,
-      );
-      const x = (phone ? innerWidth * 0.08 : innerWidth * 0.55) - box.left;
-      const y = Math.max(10, (innerHeight - box.height * scale) / 2) - box.top;
       native(".actorPuppet", "transform", [
+        { transform: "translate3d(70vw,4vh,0) rotate(8deg)", offset: 0 },
         {
-          transform: `translate3d(${x + innerWidth * 0.4}px,${y + 70}px,0) scale(${scale * 0.94})`,
-          offset: 0,
-          easing: "cubic-bezier(.2,.8,.2,1)",
+          transform: "translate3d(70vw,4vh,0) rotate(8deg)",
+          offset: t(1000),
+          easing: "cubic-bezier(.18,1.04,.3,1)",
         },
-        {
-          transform: `translate3d(${x}px,${y}px,0) scale(${scale})`,
-          offset: 300 / MENU_DURATION,
-        },
-        {
-          transform: `translate3d(${x}px,${y}px,0) scale(${scale})`,
-          offset: 840 / MENU_DURATION,
-          easing: "cubic-bezier(.2,.8,.25,1)",
-        },
-        {
-          transform: "translate3d(0,0,0) scale(1)",
-          offset: 1560 / MENU_DURATION,
-        },
-        { transform: "translate3d(0,0,0) scale(1)", offset: 1 },
+        { transform: "translate3d(0,0,0) rotate(0deg)", offset: t(1830) },
+        { transform: "translate3d(0,0,0) rotate(0deg)", offset: 1 },
       ]);
-      if (phone) {
-        const bottom = Math.max(0, box.height - 175);
-        native(".actorPuppet", "clipPath", [
-          { clipPath: "inset(0px 0px 0px 0px)", offset: 0 },
-          {
-            clipPath: "inset(0px 0px 0px 0px)",
-            offset: 1340 / MENU_DURATION,
-            easing: "cubic-bezier(.2,.8,.3,1)",
-          },
-          {
-            clipPath: `inset(0px 0px ${bottom}px 0px)`,
-            offset: 1680 / MENU_DURATION,
-          },
-          { clipPath: `inset(0px 0px ${bottom}px 0px)`, offset: 1 },
-        ]);
-      }
-      const joint = (selector, angles) =>
-        native(
-          selector,
-          "transform",
-          angles.map(([ms, angle]) => ({
-            transform: `rotate(${angle}deg)`,
-            offset: ms / MENU_DURATION,
-            easing: "cubic-bezier(.3,.05,.25,1)",
-          })),
-        );
-      joint(".rigShoulder", [
-        [0, 0],
-        [200, -12],
-        [580, 18],
-        [980, -5],
-        [1420, 0],
-        [1800, 0],
-      ]);
-      joint(".rigElbow", [
-        [0, -10],
-        [240, -27],
-        [650, 13],
-        [1080, -14],
-        [1480, -10],
-        [1800, -10],
-      ]);
-      joint(".rigHead", [
-        [0, 0],
-        [250, 4],
-        [720, -5],
-        [1300, 1],
-        [1550, 0],
-        [1800, 0],
-      ]);
-      joint(".rigBody", [
-        [0, 3],
-        [280, -3],
-        [720, 2],
-        [1450, 0],
-        [1800, 0],
+      native(".actorPuppet", "opacity", [
+        { opacity: 0, offset: 0 },
+        { opacity: 0, offset: t(1000) },
+        { opacity: 1, offset: t(1260) },
+        { opacity: 1, offset: 1 },
       ]);
       native(".actorPaperTail", "transform", [
         { transform: "translate3d(-120vw,35vh,0) rotate(-18deg)", offset: 0 },
         {
           transform: "translate3d(-120vw,35vh,0) rotate(-18deg)",
-          offset: 870 / MENU_DURATION,
+          offset: t(1140),
           easing: "cubic-bezier(.2,.75,.2,1)",
         },
         {
           transform: "translate3d(-7vw,10vh,0) rotate(-5deg)",
-          offset: 1260 / MENU_DURATION,
+          offset: t(1600),
           easing: "cubic-bezier(.45,0,.4,1)",
         },
-        {
-          transform: "translate3d(120vw,0,0) rotate(8deg)",
-          offset: 1700 / MENU_DURATION,
-        },
+        { transform: "translate3d(120vw,0,0) rotate(8deg)", offset: t(1980) },
         { transform: "translate3d(120vw,0,0) rotate(8deg)", offset: 1 },
       ]);
       createTimeline().call(cover, MENU_SWAP);
@@ -208,10 +181,17 @@ export default function MenuChange({ onCovered, onFinished }) {
   }, []);
   return (
     <div className="menuChange actorChange" ref={root} aria-hidden="true">
-      <ArchivePattern id="atlas-moving-fold" className="actorPattern" />
+      <ArchivePattern className="actorPattern" />
       <div className="actorPuppet">
         <PuppetActor />
       </div>
+      <img
+        className="actorLens"
+        src={CAMERA_IMAGE}
+        width={CAMERA_SIZE.width}
+        height={CAMERA_SIZE.height}
+        alt=""
+      />
       <svg
         className="actorPaperTail"
         viewBox="0 0 1400 230"
