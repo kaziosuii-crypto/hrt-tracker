@@ -19,9 +19,8 @@ export default function MealPhotoEnhancer(){
      const d=dateKey(dayEl.querySelector(':scope > button b')?.textContent);
      dayEl.querySelectorAll('article.intake').forEach(card=>{
       if(card.querySelector('.mealPhotos'))return;
-      const time=card.querySelector('time')?.textContent?.trim()||'';
       const title=card.querySelector(':scope > b')?.textContent||'';
-      const r=rows.find(x=>x.record_date===d&&title.includes(x.food||'')&&(!x.time_text||time===x.time_text));
+      const r=rows.find(x=>x.record_date===d&&x.food&&title.includes(x.food));
       if(!r)return;
       const pics=[['餐前',r.photo_before_url],['餐后',r.photo_after_url]].filter(x=>x[1]);
       if(!pics.length)return;
