@@ -664,7 +664,7 @@ function LabPage({ rows }) {
     </>
   );
 }
-function FoodPage({ rows }) {
+function FoodPage({ rows, onPhotoSaved }) {
   let ordered = rows
     .map((r, i) => ({ r, i }))
     .sort((a, b) => {
@@ -743,7 +743,7 @@ function FoodPage({ rows }) {
                       ? "—"
                       : r.estimated_kcal + " kcal"}
                   </strong>
-                  <MealPhotos key={r.id + String(r.photo_before_url) + String(r.photo_after_url)} meal={r} />
+                  <MealPhotos key={r.id} meal={r} onSaved={onPhotoSaved} />
                   <Details r={r} />
                 </article>
               ))}
@@ -864,7 +864,7 @@ class DataBoundary extends Component {
     );
   }
 }
-function Content({ id, data, rows, foods, retry }) {
+function Content({ id, data, rows, foods, retry, onPhotoSaved }) {
   if (data[id]?.loading && !data[id]?.loaded)
     return <div className="empty">正在读取记录…</div>;
   if (data[id]?.error)
@@ -893,7 +893,7 @@ function Content({ id, data, rows, foods, retry }) {
         />
       );
     case "food_history":
-      return <FoodPage rows={rows} />;
+      return <FoodPage rows={rows} onPhotoSaved={onPhotoSaved} />;
   }
 }
 export default function Home() {
@@ -1242,6 +1242,7 @@ export default function Home() {
             data={data}
             rows={shown}
             foods={foods}
+            onPhotoSaved={(meal) => D((old) => ({ ...old, food_history: { ...old.food_history, rows: (old.food_history?.rows || []).map((row) => String(row.id) === String(meal.id) ? { ...row, ...meal } : row) } }))}
             retry={retry}
           />
         </DataBoundary>

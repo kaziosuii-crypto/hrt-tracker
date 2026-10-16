@@ -1,13 +1,14 @@
 "use client";
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { supabase } from '../lib/supabase';
 import './MealPhotoEnhancer.css';
 
-export default function MealPhotos({ meal }) {
+export default function MealPhotos({ meal, onSaved }) {
   const [photos, setPhotos] = useState({ before: meal.photo_before_url, after: meal.photo_after_url });
   const [busy, setBusy] = useState(null), [message, setMessage] = useState('');
   const [broken, setBroken] = useState({});
   const pending = useRef(false);
+  useEffect(() => { setPhotos({ before: meal.photo_before_url, after: meal.photo_after_url }); setBroken({}); }, [meal.photo_before_url, meal.photo_after_url]);
   async function change(role, event) {
     const file = event.target.files?.[0]; event.target.value = '';
     if (!file || pending.current) return;
@@ -23,6 +24,7 @@ export default function MealPhotos({ meal }) {
       setPhotos({ before: result.photo_before_url, after: result.photo_after_url });
       setBroken((old) => ({ ...old, [role]: false }));
       setMessage('图片已保存');
+      onSaved?.(result);
     } catch (error) { setMessage(error.message || '上传失败，请重试'); }
     finally { pending.current = false; setBusy(null); }
   }

@@ -1,0 +1,27 @@
+const {chromium}=require('@playwright/test');
+const assert=require('node:assert/strict');
+(async()=>{
+ const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+ const context=await browser.newContext({viewport:{width:390,height:844},reducedMotion:'reduce'});
+ const session={access_token:'fixture-token',refresh_token:'fixture-refresh',expires_at:Math.floor(Date.now()/1000)+3600,user:{id:'fixture',email:'test@example.invalid',aud:'authenticated',role:'authenticated'}};
+ await context.addInitScript(s=>localStorage.setItem('sb-ietvfeplyhrnlzgmrncc-auth-token',JSON.stringify(s)),session);
+ const row={id:5,record_date:'2026-10-16',meal_type:'午餐',food:'测试餐',photo_before_url:null,photo_after_url:null};
+ await context.route('**/auth/v1/**',r=>r.fulfill({json:session}));
+ await context.route('**/api/data?*',r=>r.fulfill({json:r.request().url().includes('food_history')?[row]:[]}));
+ let fail=false, requests=0;
+ await context.route('**/api/food-logs/5/photos',async r=>{requests++; assert.match(r.request().headers().authorization,/Bearer fixture-token/); await r.fulfill({status:fail?500:200,json:fail?{error:'测试上传失败'}:{id:5,photo_before_url:'/meal-photos/2026-10-16-food-7-before.jpg',photo_after_url:null}});});
+ const page=await context.newPage(); const errors=[];page.on('pageerror',e=>errors.push(e.message));
+ await page.goto(process.env.TEST_URL || 'http://localhost:3000'); await page.getByRole('button',{name:'饮食',exact:true}).click();
+ await page.locator('.mealPhotos').waitFor(); assert.equal(await page.locator('.mealPhoto img').count(),2);
+ assert.equal(await page.locator('img[src="/meal-photo-placeholder.svg"]').count(),2);
+ const file={name:'meal.jpg',mimeType:'image/jpeg',buffer:Buffer.from([255,216,255,224])};
+ await page.getByLabel('午餐餐前图片').setInputFiles(file); await page.getByRole('status').filter({hasText:'图片已保存'}).waitFor();
+ assert.equal(await page.locator('img[src="/meal-photo-placeholder.svg"]').count(),1);
+ const day=page.locator('.foodDay > button'); await day.click(); await day.click();
+ assert.equal(await page.locator('img[src="/meal-photo-placeholder.svg"]').count(),1);
+ fail=true;await page.getByLabel('午餐餐后图片').setInputFiles(file); await page.getByRole('status').filter({hasText:'测试上传失败'}).waitFor();
+ assert.equal(requests,2);assert.equal(await page.locator('img[src="/meal-photo-placeholder.svg"]').count(),1);
+ assert.equal(await page.evaluate(()=>document.documentElement.scrollWidth>innerWidth),false);
+ assert.deepEqual(errors,[]); await page.screenshot({path:'/tmp/hrt-meal-photos-mobile.png',fullPage:true});
+ await browser.close(); console.log('PASS: mobile placeholders, upload, replacement label, error retention, no overflow or browser errors');
+})().catch(e=>{console.error(e);process.exit(1)});
